@@ -22,11 +22,12 @@ class ApplicationController < ActionController::Base
 
   def user_participated?
     user = authenticate_or_create_user!
-    if user.polls.find_by_id(params[:poll_id])
+    if user.poll_selections.where(poll_id: params[:poll_id]).length > 0
       true
     else
       false
     end
   end
+  helper_method :user_participated?
 
 end
