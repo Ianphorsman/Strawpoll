@@ -3,14 +3,20 @@ class App extends React.Component {
     getInitialState () {
         return {
             userParticipated: this.props.userParticipated,
-            pollContext: 'newPoll',
+            pollContext: this.props.pollContext,
             pollId: this.props.pollId,
-            pollData: {}
+            pollData: {},
+            options: ['option_1', 'option_2', 'option_3', 'option_4']
+
         }
     }
 
     gatherNewPollParams () {
-
+        return {
+            "utf8" : "checked",
+            "question" : $("[name='question']").val(),
+            "options" : $('.poll-option').map((option) => { return option.val() })
+        }
     }
 
     makePoll () {
@@ -56,10 +62,20 @@ class App extends React.Component {
         })
     }
 
+    resetOptionCount () {
+        this.setState({ options: ['option_1', 'option_2', 'option_3', 'option_4'] })
+    }
+
+    increaseOptionCount () {
+        let copy = this.state.options
+        copy.push('option_' + copy.length+1)
+        this.setState({ options: copy })
+    }
+
     /* Poll Contexts */
 
     newPoll () {
-        return <NewPoll></NewPoll>
+        return <NewPoll makePoll={this.makePoll} options={this.state.options} increaseOptionCount={this.increaseOptionCount}></NewPoll>
     }
 
     showPoll () {
@@ -75,7 +91,7 @@ class App extends React.Component {
   render () {
     return(
         <section>
-            {this[this.pollContext]()}
+            {this[this.state.pollContext]()}
         </section>
     );
   }

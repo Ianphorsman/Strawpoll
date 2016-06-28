@@ -7,10 +7,10 @@ class PollsController < ApplicationController
     user = authenticate_or_create_user
     poll = Poll.new({
         :user_id => user.id,
-        :name => params[:name]
+        :name => params[:question]
                     })
     if poll.save
-      params[:pollSelections].each do |selection|
+      params[:options].each do |selection|
         PollSelection.create({
             :user_id => user.id,
             :poll_id => poll.id,

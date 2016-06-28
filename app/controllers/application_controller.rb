@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
 
   def user_participated?
     user = authenticate_or_create_user
-    if user.poll_selections.where(poll_id: params[:poll_id]).length > 0
+    if user.votes.where(poll_id: params[:poll_id]).length > 0
       true
     else
       false
