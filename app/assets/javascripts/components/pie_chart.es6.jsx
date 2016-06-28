@@ -52,10 +52,10 @@ class PieChart extends React.Component {
     
     data () {
         return {
-            labels: this.props.pollData.map(this.labels()),
+            labels: this.props.pollData.map(this.labels),
             datasets: [{
-                data: this.props.pollData.map(this.yValues()),
-                backgroundColor: this.props.pollData.map(this.colors())
+                data: this.props.pollData.map(this.yValues),
+                backgroundColor: this.props.pollData.map(this.colors)
             }]
         }
     }

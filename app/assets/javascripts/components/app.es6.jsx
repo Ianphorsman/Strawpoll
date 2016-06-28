@@ -1,12 +1,14 @@
 class App extends React.Component {
 
-    getInitialState () {
-        return {
+    constructor(props) {
+        super(props)
+
+        this.state = {
             userParticipated: this.props.userParticipated,
             pollContext: this.props.pollContext,
             pollId: this.props.pollId,
             pollData: {},
-            options: ['option_1', 'option_2', 'option_3', 'option_4']
+            options: { 0: '', 1: '', 2: '', 3: ''}
 
         }
     }
@@ -15,13 +17,22 @@ class App extends React.Component {
         return {
             "utf8" : "checked",
             "question" : $("[name='question']").val(),
-            "options" : $('.poll-option').map((option) => { return option.val() })
+            "options" : this.state.values
         }
+    }
+
+    updateOptionValue(option, event) {
+        const options = {
+            ...this.state.options,
+            [option]: event.target.value
+        }
+        this.setState({ options })
     }
 
     makePoll () {
         let successHandler = (data) => {
             this.setState({ pollId: data.pollId, pollContext: 'showPoll', pollData: data.pollData })
+            this.resetOptionCount()
         }
         let errorHandler = (data) => {
             this.setState({ pollContext: 'edit' })
@@ -63,19 +74,28 @@ class App extends React.Component {
     }
 
     resetOptionCount () {
-        this.setState({ options: ['option_1', 'option_2', 'option_3', 'option_4'] })
+        this.setState({ options: {0: '', 1: '', 2: '', 3: ''} })
     }
 
     increaseOptionCount () {
-        let copy = this.state.options
-        copy.push('option_' + copy.length+1)
-        this.setState({ options: copy })
+        let nextPair = { [this.state.options.length+1] : '' }
+        this.setState({
+            options: this.state.options.merge(nextPair),
+        })
     }
 
     /* Poll Contexts */
 
     newPoll () {
-        return <NewPoll makePoll={this.makePoll} options={this.state.options} increaseOptionCount={this.increaseOptionCount}></NewPoll>
+        return (
+            <NewPoll
+                makePoll={this.makePoll.bind(this)}
+                options={this.state.options}
+                values={this.state.values}
+                updateOptionValue={this.updateOptionValue.bind(this)}
+                increaseOptionCount={this.increaseOptionCount.bind(this)}
+            />
+        )
     }
 
     showPoll () {
@@ -90,10 +110,9 @@ class App extends React.Component {
 
   render () {
     return(
-        <section>
-            {this[this.state.pollContext]()}
+        <section id="poll-container">
+            {this[this.state.pollContext].call(this)}
         </section>
     );
   }
 }
-

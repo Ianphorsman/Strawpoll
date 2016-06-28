@@ -3,6 +3,16 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  def user_participated?
+    user = authenticate_or_create_user
+    if user.votes.where(poll_id: params[:poll_id]).length > 0
+      true
+    else
+      false
+    end
+  end
+  helper_method :user_participated?
+
   private
 
   def authenticate_or_create_user
@@ -20,14 +30,6 @@ class ApplicationController < ActionController::Base
     user
   end
 
-  def user_participated?
-    user = authenticate_or_create_user
-    if user.votes.where(poll_id: params[:poll_id]).length > 0
-      true
-    else
-      false
-    end
-  end
-  helper_method :user_participated?
+
 
 end
