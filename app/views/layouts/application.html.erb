@@ -15,10 +15,18 @@
 
   <body>
     <%= yield %>
+    <header>
+      <h1>Straw Poll</h1>
+    </header>
     <main>
       <%= react_component 'App',
-                          :userParticipated => user_participated?
+                          :userParticipated => user_participated?,
+                          :pollContext => 'new',
+                          :pollId => 0
       %>
+      <section id="chart-container">
+        <canvas id="pie-chart"></canvas>
+      </section>
     </main>
 
   </body>

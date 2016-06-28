@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
 
     hashable_user_string = "#{ip_addr}_#{device}"
 
-    hashed_user = Digest::SHA256.new.digest(hashable_user_string)
+    hashed_user = Digest::SHA256.new.hexdigest(hashable_user_string)
 
     user = User.find_by_hashed_identity(hashed_user)
     if user.nil?
@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
   end
 
   def user_participated?
-    user = authenticate_or_create_user!
+    user = authenticate_or_create_user
     if user.poll_selections.where(poll_id: params[:poll_id]).length > 0
       true
     else
