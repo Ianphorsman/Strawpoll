@@ -22,7 +22,10 @@ class PollsController < ApplicationController
   end
 
   def show
-
+    poll = Poll.find_by_id(params[:poll_id])
+    respond_to do |format|
+      format.json { render :json => { :head => "Success", :pollData => poll.poll_data }}
+    end
   end
 
   def vote
@@ -31,7 +34,7 @@ class PollsController < ApplicationController
     poll_selection = poll.poll_selections.find_by_name(params[:selection])
     poll_selection.vote_count += 1
     poll_selection.save
-    vote = Vote.new({
+    vote = Vote.create({
         :user_id => user.id,
         :poll_id => poll.id,
         :poll_selection_id => poll_selection.id,
