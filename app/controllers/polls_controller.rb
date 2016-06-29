@@ -19,6 +19,9 @@ class PollsController < ApplicationController
                              })
       end
     end
+    respond_to do |format|
+      format.json { render :json => { :head => "Success", :pollData => poll.poll_data }}
+    end
   end
 
   def show

@@ -14,7 +14,7 @@ class Progress extends React.Component {
   render () {
     return(
         <section id="progress">
-            {this.props.pollData.map(this.progressBar())}
+            {this.props.pollData.options.map(this.progressBar.bind(this))}
         </section>
     );
   }

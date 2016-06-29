@@ -29,15 +29,15 @@ class PieChart extends React.Component {
     }
 
     labels (pieSlice) {
-        return pieSlice.label
+        return this.props.pollData.options[pieSlice].label
     }
 
     yValues (pieSlice) {
-        return pieSlice.yValue
+        return this.props.pollData.options[pieSlice].yValue
     }
 
     colors (pieSlice) {
-        return pieSlice.color
+        return this.props.pollData.options[pieSlice].color
     }
 
 
@@ -47,22 +47,22 @@ class PieChart extends React.Component {
     }
 
     plotLocation () {
-        return $('#pie-chart').get(0).context('2d')
+        return $('#pie-chart').get(0).getContext('2d');
     }
     
     data () {
         return {
-            labels: this.props.pollData.map(this.labels),
+            labels: Object.keys(this.props.pollData.options).map(this.labels.bind(this)),
             datasets: [{
-                data: this.props.pollData.map(this.yValues),
-                backgroundColor: this.props.pollData.map(this.colors)
+                data: Object.keys(this.props.pollData.options).map(this.yValues.bind(this)),
+                backgroundColor: Object.keys(this.props.pollData.options).map(this.colors.bind(this))
             }]
         }
     }
 
   render () {
       this.resetChart()
-      let pieChart = new Chart(this.plotLocation, {
+      let pieChart = new Chart(this.plotLocation(), {
           type: 'doughnut',
           data: this.data()
       })

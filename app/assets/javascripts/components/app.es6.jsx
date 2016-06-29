@@ -17,7 +17,7 @@ class App extends React.Component {
         return {
             "utf8" : "checked",
             "question" : $("[name='question']").val(),
-            "options" : this.state.values
+            "options" : Object.keys(this.state.options).map((k) => { return this.state.options[k] })
         }
     }
 
@@ -31,9 +31,11 @@ class App extends React.Component {
 
     makePoll () {
         let successHandler = (data) => {
-            this.setState({ pollId: data.pollId, pollContext: 'showPoll', pollData: data.pollData })
-            this.resetOptionCount()
-        }
+            this.setState({ pollId: data.pollId, pollData: data.pollData }, function() {
+                this.setState({pollContext: 'showPoll'});
+            });
+            this.resetOptionCount();
+        };
         let errorHandler = (data) => {
             this.setState({ pollContext: 'edit' })
         }
@@ -42,9 +44,12 @@ class App extends React.Component {
         $.ajax({
             method: 'POST',
             dataType: 'json',
+            headers: {
+                'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
             contentType: 'application/json',
             accepts: 'application/json',
-            url: path,
+            url: '/poll/create',
             data: JSON.stringify(params),
             success: successHandler.bind(this),
             error: errorHandler.bind(this)
@@ -79,8 +84,10 @@ class App extends React.Component {
 
     increaseOptionCount () {
         let nextPair = { [this.state.options.length+1] : '' }
+        let copy = Object.assign({}, this.state.options)
+        copy[this.state.options.length+1] = ''
         this.setState({
-            options: this.state.options.merge(nextPair),
+            options: copy,
         })
     }
 
@@ -99,7 +106,7 @@ class App extends React.Component {
     }
 
     showPoll () {
-        return <Poll plotData={this.state.plotData}></Poll>
+        return <Poll pollData={this.state.pollData}></Poll>
     }
 
     notFound () {
