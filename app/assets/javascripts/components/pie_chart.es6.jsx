@@ -64,7 +64,8 @@ class PieChart extends React.Component {
       this.resetChart()
       let pieChart = new Chart(this.plotLocation(), {
           type: 'doughnut',
-          data: this.data()
+          data: this.data(),
+          options: { animation: false}
       })
     return <div />;
   }

@@ -4,4 +4,5 @@ Rails.application.routes.draw do
   root 'home#index'
 
   post '/poll/create' => 'polls#create'
+  post '/poll/:poll_id/vote/:poll_selection_id' => 'polls#vote'
 end

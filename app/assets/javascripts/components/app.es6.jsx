@@ -91,6 +91,33 @@ class App extends React.Component {
         })
     }
 
+    vote (pollSelectionId, pollId) {
+        let successHandler = (data) => {
+            let copy = Object.assign({}, this.state.pollData)
+            copy.options.map((selection) => {
+                if (selection.id == pollSelectionId) {
+                    return Object.assign(selection, {yValue: selection.yValue+1})
+                } else {
+                    return selection
+                }
+            })
+            copy.voteCount = data.voteCount
+            this.setState({ pollData: copy })
+        }
+        $.ajax({
+            method: 'POST',
+            headers: {
+                'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            dataType: 'json',
+            contentType: 'application/json',
+            accepts: 'application/json',
+            url: '/poll/' + pollId + '/vote/' + pollSelectionId,
+            success: successHandler.bind(this)
+        })
+        console.log(pollSelectionId)
+    }
+
     /* Poll Contexts */
 
     newPoll () {
@@ -106,7 +133,7 @@ class App extends React.Component {
     }
 
     showPoll () {
-        return <Poll pollData={this.state.pollData}></Poll>
+        return <Poll pollData={this.state.pollData} vote={this.vote.bind(this)}></Poll>
     }
 
     notFound () {
@@ -117,7 +144,7 @@ class App extends React.Component {
 
   render () {
     return(
-        <section id="poll-container">
+        <section id="poll-container" className="col-xs-6">
             {this[this.state.pollContext].call(this)}
         </section>
     );

@@ -14,7 +14,8 @@ class Poll < ApplicationRecord
       {
           :label => selection.name,
           :yValue => selection.vote_count,
-          :color => selection.color
+          :color => selection.color,
+          :id => selection.id
       }
     end
     data[:voteCount] = self.vote_count

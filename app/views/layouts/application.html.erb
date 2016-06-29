@@ -6,6 +6,7 @@
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <link href="https://cdnjs.cloudflare.com/css?family=Raleway:400,100,200,300,500,700,800,900" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.bundle.min.js"></script>
@@ -19,14 +20,19 @@
       <h1>Straw Poll</h1>
     </header>
     <main>
-      <%= react_component 'App',
-                          :userParticipated => user_participated?,
-                          :pollContext => 'newPoll',
-                          :pollId => 0
-      %>
-      <section id="chart-container">
-        <canvas id="pie-chart"></canvas>
+      <section class="row">
+        <div class="col-xs-6">
+          <%= react_component 'App',
+                              :userParticipated => user_participated?,
+                              :pollContext => 'newPoll',
+                              :pollId => 0
+          %>
+        </div>
+        <div class="col-xs-6" id="chart-container">
+          <canvas id="pie-chart"></canvas>
+        </div>
       </section>
+
     </main>
 
   </body>

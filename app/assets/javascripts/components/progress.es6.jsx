@@ -6,6 +6,9 @@ class Progress extends React.Component {
                 pollSelectionName={pollSelection.label}
                 pollSelectionYValue={pollSelection.yValue}
                 pollSelectionColor={pollSelection.color}
+                pollSelectionId={pollSelection.id}
+                vote={this.props.vote.bind(this)}
+                pollId={this.props.pollData.pollId}
                 pollVoteCount={this.props.pollData.voteCount}>
             </ProgressBar>
         );
