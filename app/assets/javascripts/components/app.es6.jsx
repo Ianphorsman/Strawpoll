@@ -93,16 +93,18 @@ class App extends React.Component {
 
     vote (pollSelectionId, pollId) {
         let successHandler = (data) => {
-            let copy = Object.assign({}, this.state.pollData)
-            copy.options.map((selection) => {
-                if (selection.id == pollSelectionId) {
-                    return Object.assign(selection, {yValue: selection.yValue+1})
-                } else {
-                    return selection
-                }
-            })
-            copy.voteCount = data.voteCount
-            this.setState({ pollData: copy })
+            if (data.head !== "Already voted") {
+                let copy = Object.assign({}, this.state.pollData)
+                copy.options.map((selection) => {
+                    if (selection.id == pollSelectionId) {
+                        return Object.assign(selection, {yValue: selection.yValue + 1})
+                    } else {
+                        return selection
+                    }
+                })
+                copy.voteCount = data.voteCount
+                this.setState({pollData: copy, userParticipated: true})
+            }
         }
         $.ajax({
             method: 'POST',
@@ -133,7 +135,7 @@ class App extends React.Component {
     }
 
     showPoll () {
-        return <Poll pollData={this.state.pollData} vote={this.vote.bind(this)}></Poll>
+        return <Poll pollData={this.state.pollData} vote={this.vote.bind(this)} userParticipated={this.state.userParticipated}></Poll>
     }
 
     notFound () {

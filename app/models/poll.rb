@@ -8,17 +8,29 @@ class Poll < ApplicationRecord
     self.poll_selections.map(&:vote_count).inject(&:+)
   end
 
-  def poll_data
+  def poll_data user_participated=false
     data = {}
-    data[:options] = self.poll_selections.map do |selection|
-      {
-          :label => selection.name,
-          :yValue => selection.vote_count,
-          :color => selection.color,
-          :id => selection.id
-      }
+    if user_participated
+      data[:options] = self.poll_selections.map do |selection|
+        {
+            :label => selection.name,
+            :yValue => selection.vote_count,
+            :color => selection.color,
+            :id => selection.id
+        }
+      end
+      data[:voteCount] = self.vote_count
+    else
+      data[:options] = self.poll_selections.map do |selection|
+        {
+            :label => selection.name,
+            :yValue => 0,
+            :color => selection.color,
+            :id => selection.id
+        }
+      end
+      data[:voteCount] = 0
     end
-    data[:voteCount] = self.vote_count
     data[:pollId] = self.id
     data
   end

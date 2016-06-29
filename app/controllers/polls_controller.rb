@@ -23,31 +23,37 @@ class PollsController < ApplicationController
       end
     end
     respond_to do |format|
-      format.json { render :json => { :head => "Success", :pollData => poll.poll_data }}
+      format.json { render :json => { :head => "Success", :pollData => poll.poll_data(user_participated=false) }}
     end
   end
 
   def show
     poll = Poll.find_by_id(params[:poll_id])
     respond_to do |format|
-      format.json { render :json => { :head => "Success", :pollData => poll.poll_data }}
+      format.json { render :json => { :head => "Success", :pollData => poll.poll_data(user_participated=userParticipated?) }}
     end
   end
 
   def vote
     user = authenticate_or_create_user
-    poll = Poll.find_by_id(params[:poll_id])
-    poll_selection = poll.poll_selections.find_by_id(params[:poll_selection_id])
-    poll_selection.vote_count += 1
-    poll_selection.save
-    vote = Vote.create({
-        :user_id => user.id,
-        :poll_id => poll.id,
-        :poll_selection_id => poll_selection.id,
-        :poll_selection => poll_selection.name
-                    })
-    respond_to do |format|
-      format.json { render :json => { :head => "Success", :vote => vote, :voteCount => poll.vote_count}}
+    if user_participated?
+      respond_to do |format|
+        format.json { render :json => { :head => "Already voted" } }
+      end
+    else
+      poll = Poll.find_by_id(params[:poll_id])
+      poll_selection = poll.poll_selections.find_by_id(params[:poll_selection_id])
+      poll_selection.vote_count += 1
+      poll_selection.save
+      vote = Vote.create({
+                             :user_id => user.id,
+                             :poll_id => poll.id,
+                             :poll_selection_id => poll_selection.id,
+                             :poll_selection => poll_selection.name
+                         })
+      respond_to do |format|
+        format.json { render :json => { :head => "Success", :vote => vote, :voteCount => poll.vote_count}}
+      end
     end
   end
 
