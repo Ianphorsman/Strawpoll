@@ -141,6 +141,29 @@ class App extends React.Component {
     notFound () {
         return <div />
     }
+
+    componentDidMount() {
+        this.pollSubscription();
+    }
+
+    updatePollData(data) {
+        let copy = Object.assign({}, this.state.pollData);
+        copy
+    }
+    
+    pollSubscription() {
+        App.cable.subscriptions.create("pollChannel", {
+            pollData: this.state.pollData,
+            connected: function() {
+                setTimeout(() => this.perform('follow',
+                    { pollData: this.pollData }), 1000
+                );
+            },
+            received: function(data) {
+                this.updatePollData(data);
+            }
+        })
+    }
     
     
 
