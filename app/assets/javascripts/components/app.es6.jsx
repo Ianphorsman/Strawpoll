@@ -139,7 +139,7 @@ class App extends React.Component {
     }
 
     notFound () {
-        return <div />
+        return <p>Could not direct you to the requested poll.</p>
     }
 
     componentDidMount() {
@@ -148,7 +148,8 @@ class App extends React.Component {
 
     updatePollData(data) {
         let copy = Object.assign({}, this.state.pollData);
-        copy
+        copy = data;
+        this.setState({ pollData : copy })
     }
     
     pollSubscription() {
@@ -163,6 +164,9 @@ class App extends React.Component {
                 this.updatePollData(data);
             }
         })
+    }
+
+    unsubscribeFromPoll() {
     }
     
     

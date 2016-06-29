@@ -61,6 +61,7 @@ class PollsController < ApplicationController
 
   def get_color count
     color_wheel = [
+        "#9e9e9e", #grey
         "#8bc34a", #light green
         "#03a9f4", #light blue
         "#f44336", #red
@@ -78,7 +79,6 @@ class PollsController < ApplicationController
         "#009688", #teal
         "#cddc39", #lime
         "#ff5722", #deep orange
-        "#9e9e9e", #grey
         "#607d8b", #blue grey
     ]
     color_wheel[count % color_wheel.length]
