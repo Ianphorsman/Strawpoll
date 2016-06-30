@@ -4,6 +4,10 @@ class PollsChannel < ApplicationCable::Channel
     # stream_from "some_channel"
   end
 
+  def follow data # { pollData => {}, pollId => int }
+    # follow the poll with id == pollId
+  end
+
   def unsubscribed
     # Any cleanup needed when channel is unsubscribed
   end

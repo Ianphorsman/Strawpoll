@@ -153,11 +153,12 @@ class App extends React.Component {
     }
     
     pollSubscription() {
-        App.cable.subscriptions.create("pollChannel", {
+        App.cable.subscriptions.create("PollsChannel", {
             pollData: this.state.pollData,
+            pollId: this.state.pollId,
             connected: function() {
                 setTimeout(() => this.perform('follow',
-                    { pollData: this.pollData }), 1000
+                    { pollData: this.pollData, pollId: this.pollId }), 1000
                 );
             },
             received: function(data) {
