@@ -59,7 +59,8 @@ class App extends React.Component {
 
     getPoll (path) {
         let successHandler = (data) => {
-            this.setState({ pollId: data.pollId, pollData: data.pollData }, function() {
+            console.log(data.pollData.pollId);
+            this.setState({ pollId: data.pollData.pollId, pollData: data.pollData }, function() {
                 this.setState({ pollContext: 'showPoll'});
             });
             this.resetOptionCount();
@@ -172,7 +173,10 @@ class App extends React.Component {
             },
             received: function(data) {
                 console.log(that);
-                that.updatePollData(data.pollData);
+                console.log(that.state, data.pollId);
+                if (that.state.pollId == data.pollId) {
+                    that.updatePollData(data.pollData);
+                }
             }
         })
     }
