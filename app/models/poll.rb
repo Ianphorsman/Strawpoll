@@ -24,7 +24,7 @@ class Poll < ApplicationRecord
       data[:options] = self.poll_selections.map do |selection|
         {
             :label => selection.name,
-            :yValue => 0,
+            :yValue => selection.vote_count,
             :color => selection.color,
             :id => selection.id
         }
@@ -32,6 +32,7 @@ class Poll < ApplicationRecord
       data[:voteCount] = 0
     end
     data[:pollId] = self.id
+    data[:options] = data[:options].sort_by { |obj| obj[:label] }
     data
   end
 

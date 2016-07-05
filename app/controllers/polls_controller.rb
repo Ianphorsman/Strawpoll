@@ -28,23 +28,27 @@ class PollsController < ApplicationController
   end
 
   def show
-    poll = Poll.find_by_id(params[:poll_id])
+    poll = Poll.find_by_id(params[:poll_id].to_i)
     respond_to do |format|
-      format.json { render :json => { :head => "Success", :pollData => poll.poll_data(user_participated=userParticipated?) }}
+      format.json { render :json => { :head => "Success", :pollData => poll.poll_data(user_participated=user_participated?) }}
     end
   end
 
   def vote
     user = authenticate_or_create_user
-    if user_participated?
-      respond_to do |format|
-        format.json { render :json => { :head => "Already voted" } }
-      end
-    else
+    #if user_participated?
+    #  respond_to do |format|
+     #   format.json { render :json => { :head => "Already voted" } }
+      #end
+    #else
       poll = Poll.find_by_id(params[:poll_id])
       poll_selection = poll.poll_selections.find_by_id(params[:poll_selection_id])
       poll_selection.vote_count += 1
-      poll_selection.save
+      if poll_selection.save
+        ActionCable.server.broadcast 'polls',
+            pollId: poll.id,
+            pollData: poll.poll_data
+      end
       vote = Vote.create({
                              :user_id => user.id,
                              :poll_id => poll.id,
@@ -54,7 +58,7 @@ class PollsController < ApplicationController
       respond_to do |format|
         format.json { render :json => { :head => "Success", :vote => vote, :voteCount => poll.vote_count}}
       end
-    end
+    #end
   end
 
   private

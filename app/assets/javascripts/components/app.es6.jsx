@@ -8,7 +8,8 @@ class App extends React.Component {
             pollContext: this.props.pollContext,
             pollId: this.props.pollId,
             pollData: {},
-            options: { 0: '', 1: '', 2: '', 3: ''}
+            options: { 0: '', 1: '', 2: '', 3: ''},
+            latestPollId: this.props.latestPollId
 
         }
     }
@@ -38,7 +39,7 @@ class App extends React.Component {
         };
         let errorHandler = (data) => {
             this.setState({ pollContext: 'edit' })
-        }
+        };
         let params = this.gatherNewPollParams()
 
         $.ajax({
@@ -58,11 +59,14 @@ class App extends React.Component {
 
     getPoll (path) {
         let successHandler = (data) => {
-            this.setState({ pollId: data.pollId, pollContext: 'showPoll', pollData: data.pollData })
-        }
+            this.setState({ pollId: data.pollId, pollData: data.pollData }, function() {
+                this.setState({ pollContext: 'showPoll'});
+            });
+            this.resetOptionCount();
+        };
         let errorHandler = (data) => {
             this.setState({ pollContext: 'notFound' })
-        }
+        };
         $.ajax({
             method: 'GET',
             headers: {
@@ -71,7 +75,7 @@ class App extends React.Component {
             dataType: 'json',
             contentType: 'application/json',
             accepts: 'application/json',
-            url: path(),
+            url: '/poll/' + path,
             success: successHandler.bind(this),
             error: errorHandler.bind(this)
 
@@ -97,7 +101,7 @@ class App extends React.Component {
                 let copy = Object.assign({}, this.state.pollData)
                 copy.options.map((selection) => {
                     if (selection.id == pollSelectionId) {
-                        return Object.assign(selection, {yValue: selection.yValue + 1})
+                        return Object.assign(selection, {yValue: selection.yValue})
                     } else {
                         return selection
                     }
@@ -149,10 +153,15 @@ class App extends React.Component {
     updatePollData(data) {
         let copy = Object.assign({}, this.state.pollData);
         copy = data;
-        this.setState({ pollData : copy })
+        console.log('pre set state', data);
+        this.setState({ pollData : copy }, function() {
+            console.log('setState cb', this.state.pollData);
+        })
+
     }
     
     pollSubscription() {
+        let that = this;
         App.cable.subscriptions.create("PollsChannel", {
             pollData: this.state.pollData,
             pollId: this.state.pollId,
@@ -162,7 +171,8 @@ class App extends React.Component {
                 );
             },
             received: function(data) {
-                this.updatePollData(data);
+                console.log(that);
+                that.updatePollData(data.pollData);
             }
         })
     }
@@ -174,9 +184,16 @@ class App extends React.Component {
 
   render () {
     return(
-        <section id="poll-container" className="col-xs-6">
-            {this[this.state.pollContext].call(this)}
-        </section>
+        <div>
+            <header>
+                <MainMenu getPoll={this.getPoll.bind(this)} latestPoll={this.state.latestPollId}></MainMenu>
+            </header>
+            <main>
+                <section id="poll-container" className="col-xs-6">
+                    {this[this.state.pollContext].call(this)}
+                </section>
+            </main>
+        </div>
     );
   }
 }

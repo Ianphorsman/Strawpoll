@@ -25,7 +25,8 @@
           <%= react_component 'App',
                               :userParticipated => user_participated?,
                               :pollContext => 'newPoll',
-                              :pollId => 0
+                              :pollId => 0,
+                              :latestPollId => @latest
           %>
         </div>
         <div class="col-xs-6" id="chart-container">
