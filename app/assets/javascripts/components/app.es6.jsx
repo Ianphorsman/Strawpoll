@@ -28,11 +28,28 @@ class App extends React.Component {
                 return $("[name='poll-expires-in']").val();
             }
         };
+        let numVotes = () => {
+            if ($("[name='num-votes']").val() == 0) {
+                return 1;
+
+            } else {
+                return $("[name='num-votes']").val();
+            }
+        };
+        let totalVotes = () => {
+            if ($("[name='total-votes']").val() == 0) {
+                return 1000;
+            } else {
+                return $("[name='total-votes']").val();
+            }
+        }
         return {
             "utf8" : "checked",
             "question" : $("[name='question']").val(),
             "poll_expires_in": expireAmount(),
             "poll_expiry_unit": $("[name='poll-expiry-unit']").val(),
+            "votes_per_person": numVotes(),
+            "total_votes": totalVotes(),
             "options" : Object.keys(this.state.options).map((k) => { return this.state.options[k] })
         }
     }

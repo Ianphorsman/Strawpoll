@@ -30,6 +30,13 @@ class NewPoll extends React.Component {
                     <option value="minutes">minutes</option>
                 </select>
             </section>
+            <section id="votes-per-person">
+                <p>Votes allowed per person: </p>
+                <input name="num-votes" placeholder="1" />
+                <p>Cap poll at </p>
+                <input name="total-votes" placeholder="1000" />
+                <p> votes.</p>
+            </section>
             <button type="button" onClick={this.props.increaseOptionCount.bind(null)}>Add Option</button>
             <button type="button" onClick={this.props.makePoll.bind(null)}>Create</button>
         </form>

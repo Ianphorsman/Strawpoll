@@ -2,7 +2,7 @@ class Poll < ApplicationRecord
 
   has_many :poll_selections
 
-  validates_presence_of :user_id
+  validates_presence_of :user_id, :votes_per_person, :total_votes, :lifespan
 
   def vote_count
     self.poll_selections.map(&:vote_count).inject(&:+)
@@ -31,7 +31,7 @@ class Poll < ApplicationRecord
       end
       data[:voteCount] = 0
     end
-    if (Time.now.utc - self.created_at) > self.lifespan
+    if ((Time.now.utc - self.created_at) > self.lifespan) || self.total_votes < self.vote_count
       data[:pollOpen] = false
     else
       data[:pollOpen] = true

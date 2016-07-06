@@ -8,6 +8,8 @@ class PollsController < ApplicationController
     poll = Poll.new({
         :user_id => user.id,
         :lifespan => get_expiry_date(params[:poll_expires_in], params[:poll_expiry_unit]),
+        :votes_per_person => params[:votes_per_person].to_i,
+        :total_votes => params[:total_votes].to_i,
         :name => params[:question]
                     })
     if poll.save
