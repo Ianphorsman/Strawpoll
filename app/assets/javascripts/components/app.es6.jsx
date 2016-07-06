@@ -16,10 +16,23 @@ class App extends React.Component {
         }
     }
 
+    changePollContext (newContext) {
+        this.setState({ pollContext: newContext })
+    }
+
     gatherNewPollParams () {
+        let expireAmount = () => {
+            if ($("[name='poll-expires-in']").val() == 0) {
+                return $("[name='poll-expires-in']").attr('placeholder');
+            } else {
+                return $("[name='poll-expires-in']").val();
+            }
+        };
         return {
             "utf8" : "checked",
             "question" : $("[name='question']").val(),
+            "poll_expires_in": expireAmount(),
+            "poll_expiry_unit": $("[name='poll-expiry-unit']").val(),
             "options" : Object.keys(this.state.options).map((k) => { return this.state.options[k] })
         }
     }
@@ -34,8 +47,9 @@ class App extends React.Component {
 
     makePoll () {
         let successHandler = (data) => {
-            this.setState({ pollId: data.pollId, pollData: data.pollData, userPolls: data.userPolls, popularPolls: data.popularPolls }, function() {
-                this.setState({pollContext: 'showPoll'});
+            this.setState({ pollId: data.pollData.pollId, pollData: data.pollData, userPolls: data.userPolls, popularPolls: data.popularPolls }, function() {
+                this.setState({ pollContext: 'showPoll'});
+                this.updateSubscription();
             });
             this.resetOptionCount();
         };
@@ -203,6 +217,7 @@ class App extends React.Component {
                     getPoll={this.getPoll.bind(this)}
                     latestPoll={this.state.latestPollId}
                     userPolls={this.state.userPolls}
+                    changePollContext={this.changePollContext.bind(this)}
                     popularPolls={this.state.popularPolls}>
 
                 </MainMenu>

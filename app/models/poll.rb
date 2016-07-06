@@ -31,6 +31,11 @@ class Poll < ApplicationRecord
       end
       data[:voteCount] = 0
     end
+    if (Time.now.utc - self.created_at) > self.lifespan
+      data[:pollOpen] = false
+    else
+      data[:pollOpen] = true
+    end
     data[:pollId] = self.id
     data[:options] = data[:options].sort_by { |obj| obj[:label] }
     data

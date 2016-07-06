@@ -25,6 +25,9 @@ var MainMenu = React.createClass({
                         <li className="active">
                             <a type="button" onClick={this.props.getPoll.bind(this, this.props.latestPoll)}>Latest Poll</a>
                         </li>
+                        <li className="active">
+                            <a type="button" onClick={this.props.changePollContext.bind(this, 'newPoll')}>New Poll</a>
+                        </li>
                         <li className="dropdown">
                             <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Your Latest Polls</a>
                             <ul className="dropdown-menu">

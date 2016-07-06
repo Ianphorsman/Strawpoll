@@ -21,6 +21,15 @@ class NewPoll extends React.Component {
             <section id="poll-options">
                 {Object.keys(this.props.options).map(this.addSelectionFields.bind(this))}
             </section>
+            <section id="poll-expiry">
+                <p>Close poll in </p>
+                <input type="text" name="poll-expires-in" placeholder="7" />
+                <select name="poll-expiry-unit">
+                    <option value="days">days</option>
+                    <option value="hours">hours</option>
+                    <option value="minutes">minutes</option>
+                </select>
+            </section>
             <button type="button" onClick={this.props.increaseOptionCount.bind(null)}>Add Option</button>
             <button type="button" onClick={this.props.makePoll.bind(null)}>Create</button>
         </form>

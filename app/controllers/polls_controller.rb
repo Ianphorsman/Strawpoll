@@ -7,6 +7,7 @@ class PollsController < ApplicationController
     user = authenticate_or_create_user
     poll = Poll.new({
         :user_id => user.id,
+        :lifespan => get_expiry_date(params[:poll_expires_in], params[:poll_expiry_unit]),
         :name => params[:question]
                     })
     if poll.save
@@ -88,6 +89,10 @@ class PollsController < ApplicationController
         "#607d8b", #blue grey
     ]
     color_wheel[count % color_wheel.length]
+  end
+
+  def get_expiry_date expire_amount, expire_unit
+    expire_amount.to_i.send(expire_unit)
   end
 
 
