@@ -10,6 +10,7 @@ class App extends React.Component {
             pollData: {pollId: 0},
             options: { 0: '', 1: '', 2: '', 3: ''},
             userPolls: this.props.userPolls,
+            popularPolls: this.props.popularPolls,
             latestPollId: this.props.latestPollId
 
         }
@@ -198,7 +199,13 @@ class App extends React.Component {
     return(
         <div>
             <header>
-                <MainMenu getPoll={this.getPoll.bind(this)} latestPoll={this.state.latestPollId} userPolls={this.state.userPolls}></MainMenu>
+                <MainMenu
+                    getPoll={this.getPoll.bind(this)}
+                    latestPoll={this.state.latestPollId}
+                    userPolls={this.state.userPolls}
+                    popularPolls={this.state.popularPolls}>
+
+                </MainMenu>
             </header>
             <main>
                 <section id="poll-container" className="col-xs-6">

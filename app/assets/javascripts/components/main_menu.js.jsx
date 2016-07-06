@@ -31,6 +31,12 @@ var MainMenu = React.createClass({
                                 {this.props.userPolls.map(this.listPoll)}
                             </ul>
                         </li>
+                        <li className="dropdown">
+                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Popular</a>
+                            <ul className="dropdown-menu">
+                                {this.props.popularPolls.map(this.listPoll)}
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>
