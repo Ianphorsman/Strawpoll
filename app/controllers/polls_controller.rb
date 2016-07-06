@@ -21,9 +21,11 @@ class PollsController < ApplicationController
                              })
         count += 1
       end
+      user_polls = user.polls.map { |poll| { :id => poll.id, :question => poll.name, :vote_count => poll.vote_count }}.sort_by { |poll| -poll[:vote_count] }.first(10)
+      popular_polls = Poll.all.sort_by { |poll| poll.vote_count }.last(10).map { |poll| { :id => poll.id, :question => poll.name, :vote_count => poll.vote_count }}
     end
     respond_to do |format|
-      format.json { render :json => { :head => "Success", :pollData => poll.poll_data(user_participated=false) }}
+      format.json { render :json => { :head => "Success", :pollData => poll.poll_data(user_participated=false), :popularPolls => popular_polls, :userPolls => user_polls }}
     end
   end
 

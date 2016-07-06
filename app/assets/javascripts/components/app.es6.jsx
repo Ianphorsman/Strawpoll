@@ -34,7 +34,7 @@ class App extends React.Component {
 
     makePoll () {
         let successHandler = (data) => {
-            this.setState({ pollId: data.pollId, pollData: data.pollData }, function() {
+            this.setState({ pollId: data.pollId, pollData: data.pollData, userPolls: data.userPolls, popularPolls: data.popularPolls }, function() {
                 this.setState({pollContext: 'showPoll'});
             });
             this.resetOptionCount();
