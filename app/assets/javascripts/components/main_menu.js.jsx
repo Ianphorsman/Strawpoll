@@ -1,5 +1,13 @@
 var MainMenu = React.createClass({
 
+    listPoll: function(poll) {
+        return(
+            <li>
+                <a type="button" onClick={this.props.getPoll.bind(this, poll.id)}>{poll.question}</a>
+            </li>
+        );
+    },
+
   render: function() {
     return(
         <div className="navbar navbar-default">
@@ -15,7 +23,13 @@ var MainMenu = React.createClass({
                 <div className="navbar-collapse collapse" id="main-menu">
                     <ul className="nav navbar-nav">
                         <li className="active">
-                            <button type="button" onClick={this.props.getPoll.bind(this, this.props.latestPoll)}>Favourite Color</button>
+                            <a type="button" onClick={this.props.getPoll.bind(this, this.props.latestPoll)}>Latest Poll</a>
+                        </li>
+                        <li className="dropdown">
+                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Your Latest Polls</a>
+                            <ul className="dropdown-menu">
+                                {this.props.userPolls.map(this.listPoll)}
+                            </ul>
                         </li>
                     </ul>
                 </div>

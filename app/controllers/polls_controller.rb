@@ -45,7 +45,7 @@ class PollsController < ApplicationController
       poll_selection = poll.poll_selections.find_by_id(params[:poll_selection_id])
       poll_selection.vote_count += 1
       if poll_selection.save
-        ActionCable.server.broadcast 'polls',
+        ActionCable.server.broadcast "polls_#{poll.id}",
             pollId: poll.id,
             pollData: poll.poll_data
       end

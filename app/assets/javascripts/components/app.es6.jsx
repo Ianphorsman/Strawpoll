@@ -7,8 +7,9 @@ class App extends React.Component {
             userParticipated: this.props.userParticipated,
             pollContext: this.props.pollContext,
             pollId: this.props.pollId,
-            pollData: {},
+            pollData: {pollId: 0},
             options: { 0: '', 1: '', 2: '', 3: ''},
+            userPolls: this.props.userPolls,
             latestPollId: this.props.latestPollId
 
         }
@@ -62,6 +63,7 @@ class App extends React.Component {
             console.log(data.pollData.pollId);
             this.setState({ pollId: data.pollData.pollId, pollData: data.pollData }, function() {
                 this.setState({ pollContext: 'showPoll'});
+                this.updateSubscription();
             });
             this.resetOptionCount();
         };
@@ -148,40 +150,46 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        this.pollSubscription();
+        this.pollSubscription(this);
     }
 
     updatePollData(data) {
         let copy = Object.assign({}, this.state.pollData);
         copy = data;
-        console.log('pre set state', data);
-        this.setState({ pollData : copy }, function() {
-            console.log('setState cb', this.state.pollData);
-        })
+        this.setState({ pollData : copy })
 
     }
     
-    pollSubscription() {
-        let that = this;
-        App.cable.subscriptions.create("PollsChannel", {
-            pollData: this.state.pollData,
-            pollId: this.state.pollId,
+    pollSubscription(that) {
+        this.pollStream = App.cable.subscriptions.create("PollsChannel", {
+            pollData: that.state.pollData,
+            pollId: that.state.pollData.pollId,
             connected: function() {
                 setTimeout(() => this.perform('follow',
                     { pollData: this.pollData, pollId: this.pollId }), 1000
                 );
             },
+
+            disconnected: function() {
+                this.perform('unfollow')
+            },
             received: function(data) {
-                console.log(that);
-                console.log(that.state, data.pollId);
                 if (that.state.pollId == data.pollId) {
                     that.updatePollData(data.pollData);
                 }
-            }
+            },
+            updateStream: function(that) {
+                //this.perform('unfollow');
+                setTimeout(() => this.perform('follow', {
+                    pollData: that.state.pollData,
+                    pollId: that.state.pollData.pollId
+                }), 1000);
+            },
         })
     }
 
-    unsubscribeFromPoll() {
+    updateSubscription() {
+        this.pollStream.updateStream(this);
     }
     
     
@@ -190,7 +198,7 @@ class App extends React.Component {
     return(
         <div>
             <header>
-                <MainMenu getPoll={this.getPoll.bind(this)} latestPoll={this.state.latestPollId}></MainMenu>
+                <MainMenu getPoll={this.getPoll.bind(this)} latestPoll={this.state.latestPollId} userPolls={this.state.userPolls}></MainMenu>
             </header>
             <main>
                 <section id="poll-container" className="col-xs-6">
