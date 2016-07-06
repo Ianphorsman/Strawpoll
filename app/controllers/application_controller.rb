@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   def user_participated?
     user = authenticate_or_create_user
-    poll = Poll.find_by_id(params[:poll_id])
+    poll = Poll.find_by_id(params[:poll_id]) || Poll.last
     if user.votes.where(poll_id: params[:poll_id]).length >= poll.votes_per_person
       true
     else

@@ -41,11 +41,11 @@ class PollsController < ApplicationController
 
   def vote
     user = authenticate_or_create_user
-    #if user_participated?
-    #  respond_to do |format|
-     #   format.json { render :json => { :head => "Already voted" } }
-      #end
-    #else
+    if user_participated?
+      respond_to do |format|
+        format.json { render :json => { :head => "Already voted" } }
+      end
+    else
       poll = Poll.find_by_id(params[:poll_id])
       poll_selection = poll.poll_selections.find_by_id(params[:poll_selection_id])
       poll_selection.vote_count += 1
@@ -63,7 +63,7 @@ class PollsController < ApplicationController
       respond_to do |format|
         format.json { render :json => { :head => "Success", :vote => vote, :voteCount => poll.vote_count}}
       end
-    #end
+    end
   end
 
   private
