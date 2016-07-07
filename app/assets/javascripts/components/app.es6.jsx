@@ -243,6 +243,9 @@ class App extends React.Component {
                 <section id="poll-container" className="col-xs-6">
                     {this[this.state.pollContext].call(this)}
                 </section>
+                <div className="col-xs-6" id="chart-container">
+                    <canvas id="pie-chart"></canvas>
+                </div>
             </main>
         </div>
     );

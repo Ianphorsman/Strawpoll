@@ -21,7 +21,6 @@
     </header>
     <main>
       <section class="row">
-        <div class="col-xs-6">
           <%= react_component 'App',
                               :userParticipated => user_participated?,
                               :pollContext => 'newPoll',
@@ -30,10 +29,6 @@
                               :popularPolls => @popular_polls,
                               :latestPollId => @latest
           %>
-        </div>
-        <div class="col-xs-6" id="chart-container">
-          <canvas id="pie-chart"></canvas>
-        </div>
       </section>
 
     </main>
