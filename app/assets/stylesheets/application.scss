@@ -10,6 +10,9 @@ body {
 section {
   padding: 0;
 }
+label {
+  text-align: right;
+}
 .row.no-pad > [class*='col'] {
   padding-left: 0;
   padding-right: 0;

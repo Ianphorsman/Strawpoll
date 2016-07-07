@@ -43,7 +43,7 @@ class NewPoll extends React.Component {
                 <div className="col-xs-6">
                     <input className="form-control" name="num-votes" placeholder="1" />
                 </div>
-                <p className="col-xs-6">Cap poll at </p>
+                <label className="col-xs-6">Cap poll at </label>
                 <div className="col-xs-4">
                     <input className="form-control" name="total-votes" placeholder="1000" />
                 </div>
