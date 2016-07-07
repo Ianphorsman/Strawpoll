@@ -122,9 +122,9 @@ class App extends React.Component {
     }
 
     increaseOptionCount () {
-        let nextPair = { [this.state.options.length+1] : '' }
+        let nextPair = { [Object.keys(this.state.options).length] : '' }
         let copy = Object.assign({}, this.state.options)
-        copy[this.state.options.length+1] = ''
+        copy[Object.keys(this.state.options).length] = ''
         this.setState({
             options: copy,
         })
