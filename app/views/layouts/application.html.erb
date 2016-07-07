@@ -16,10 +16,6 @@
 
   <body>
     <%= yield %>
-    <header>
-      <h1>Straw Poll</h1>
-    </header>
-    <main>
       <section class="row">
           <%= react_component 'App',
                               :userParticipated => user_participated?,
@@ -30,8 +26,5 @@
                               :latestPollId => @latest
           %>
       </section>
-
-    </main>
-
   </body>
 </html>

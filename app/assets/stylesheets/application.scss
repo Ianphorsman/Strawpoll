@@ -1,6 +1,12 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+html, .navbar-default {
+  padding: 0 10%;
+}
+body {
+  padding-top: 100px;
+}
 .vote {
   position: absolute;
   left: 100%;

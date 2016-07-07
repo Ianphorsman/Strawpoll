@@ -37,6 +37,7 @@ class Poll < ApplicationRecord
       data[:pollOpen] = true
     end
     data[:pollId] = self.id
+    data[:question] = self.name
     data[:options] = data[:options].sort_by { |obj| obj[:label] }
     data
   end
