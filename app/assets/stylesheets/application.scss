@@ -7,6 +7,13 @@ html, .navbar-default {
 body {
   padding-top: 100px;
 }
+section {
+  padding: 0;
+}
+.row.no-pad > [class*='col'] {
+  padding-left: 0;
+  padding-right: 0;
+}
 .vote {
   position: absolute;
   left: 100%;

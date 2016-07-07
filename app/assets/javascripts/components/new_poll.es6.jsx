@@ -4,29 +4,33 @@ class NewPoll extends React.Component {
 
     addSelectionFields(option) {
         return (
-            <input
-                type="text"
-                name={"option_" + option}
-                onChange={this.props.updateOptionValue.bind(null, option[0])}
-                className="poll-option form-control"
-                placeholder="Enter poll option"
-            />
+            <div className="col-xs-12">
+                <input
+                    type="text"
+                    name={"option_" + option}
+                    onChange={this.props.updateOptionValue.bind(null, option[0])}
+                    className="poll-option form-control"
+                    placeholder="Enter poll option"
+                />
+            </div>
         )
     }
 
   render () {
     return(
         <form>
-            <input className="form-control" type="text" name="question" placeholder="Type your questions here..." />
-            <section id="poll-options">
+            <section className="row no-pad">
+                <div className="col-xs-12">
+                    <input className="form-control" type="text" name="question" placeholder="Type your questions here..." />
+                </div>
                 {Object.keys(this.props.options).map(this.addSelectionFields.bind(this))}
             </section>
-            <section id="poll-expiry" className="form-inline">
-                <div className="input-group">
-                    <label className="input-group-addon">Close poll in </label>
+            <section id="poll-expiry" className="row no-pad">
+                <label className="col-xs-6">Close poll in </label>
+                <div className="col-xs-3">
                     <input className="form-control" type="text" name="poll-expires-in" placeholder="7" />
                 </div>
-                <div className="input-group">
+                <div className="col-xs-3">
                     <select className="form-control" name="poll-expiry-unit">
                         <option value="days">days</option>
                         <option value="hours">hours</option>
@@ -34,20 +38,24 @@ class NewPoll extends React.Component {
                     </select>
                 </div>
             </section>
-            <section id="votes-per-person" className="form-inline">
-                <div className="input-group">
-                    <label className="input-group-addon">Votes allowed per person: </label>
+            <section id="votes-per-person" className="row no-pad">
+                <label className="col-xs-6">Votes allowed per person: </label>
+                <div className="col-xs-6">
                     <input className="form-control" name="num-votes" placeholder="1" />
                 </div>
-                <div className="input-group">
-                    <p className="input-group-addon">Cap poll at </p>
+                <p className="col-xs-6">Cap poll at </p>
+                <div className="col-xs-4">
                     <input className="form-control" name="total-votes" placeholder="1000" />
-                    <p className="input-group-addon"> votes.</p>
                 </div>
+                <p className="col-xs-2"> votes.</p>
             </section>
-            <section className="btn-group">
-                <button className="btn btn-default" type="button" onClick={this.props.increaseOptionCount.bind(null)}>Add Option</button>
-                <button className="btn btn-primary" type="button" onClick={this.props.makePoll.bind(null)}>Create</button>
+            <section className="row no-pad">
+                <div className="col-xs-5 col-xs-offset-7">
+                    <div className="btn-group btn-group-justified" role="group">
+                        <a className="btn btn-default" type="button" onClick={this.props.increaseOptionCount.bind(null)}>Add Option</a>
+                        <a className="btn btn-primary" type="button" onClick={this.props.makePoll.bind(null)}>Create</a>
+                    </div>
+                </div>
             </section>
         </form>
     );
