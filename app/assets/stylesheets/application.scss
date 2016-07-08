@@ -65,6 +65,9 @@ label {
       font-weight: normal;
       color: black;
       font-family: 'Poiret One', cursive;
+      &.poll-option {
+        background-color: darken(#f8f8f8, 5%);
+      }
       &.option {
         margin-bottom: 0.5em;
         margin-top: 0.5em;
@@ -85,13 +88,17 @@ label {
     }
   }
   &.filled {
-    background-color: lighten(#8bc34a, 15%);
+
     font-weight: bold;
     color: black;
     font-family: 'Dosis', sans-serif;
     &.option {
       margin-bottom: 0;
       margin-top: 0;
+      background-color: lighten(#8bc34a, 15%);
+    }
+    &.poll-option {
+      background-color: mix(#ffc107, #f8f8f8);
     }
     transition: margin .2s;
     &[name='question'] {

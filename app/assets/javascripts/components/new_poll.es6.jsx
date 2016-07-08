@@ -94,7 +94,7 @@ class NewPoll extends React.Component {
 
     presentNumVotes() {
         if (this.validNumVotes()) {
-            return "form-control filled";
+            return "form-control filled poll-option";
         } else {
             return "form-control";
         }
@@ -110,7 +110,7 @@ class NewPoll extends React.Component {
 
     presentTotalVotes() {
         if (this.validTotalVotes()) {
-            return "form-control filled";
+            return "form-control filled poll-option";
         } else {
             return "form-control";
         }
@@ -126,7 +126,7 @@ class NewPoll extends React.Component {
 
     presentPollExpiresIn() {
         if (this.validPollExpiresIn()) {
-            return "form-control filled";
+            return "form-control filled poll-option";
         } else {
             return "form-control";
         }
