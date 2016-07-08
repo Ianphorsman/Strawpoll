@@ -23,7 +23,15 @@ class NewPoll extends React.Component {
     }
 
     validOption(option) {
-        if (this.props.options[option].length > 0 && this.validOptions()) {
+        if (this.filledOption(option) && this.validOptions()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    filledOption(option) {
+        if (this.props.options[option].length > 0) {
             return true;
         } else {
             return false;
@@ -31,9 +39,9 @@ class NewPoll extends React.Component {
     }
 
     presentOption(option) {
-        if (this.validOption(option)) {
+        if (this.filledOption(option)) {
             return "form-control filled";
-        } else {
+        } else  {
             return "form-control";
         }
     }
@@ -67,6 +75,54 @@ class NewPoll extends React.Component {
         }
     }
 
+    validNumVotes() {
+        if (this.props.numVotes > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    presentNumVotes() {
+        if (this.validNumVotes()) {
+            return "form-control filled";
+        } else {
+            return "form-control";
+        }
+    }
+
+    validTotalVotes() {
+        if (this.props.totalVotes > 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    presentTotalVotes() {
+        if (this.validTotalVotes()) {
+            return "form-control filled";
+        } else {
+            return "form-control";
+        }
+    }
+
+    validPollExpiresIn() {
+        if (this.props.pollExpiresIn > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    presentPollExpiresIn() {
+        if (this.validPollExpiresIn()) {
+            return "form-control filled";
+        } else {
+            return "form-control";
+        }
+    }
+
     readyToSubmit () {
         if (this.validQuestion() && this.validOptions()) {
             return true;
@@ -97,10 +153,10 @@ class NewPoll extends React.Component {
                     <label className="right">Close poll in </label>
                 </div>
                 <div className="col-xs-3">
-                    <input className="form-control" type="text" name="poll-expires-in" placeholder="7" />
+                    <input className={this.presentPollExpiresIn()} onChange={this.props.updatePollExpiresIn.bind(null)} type="text" name="poll-expires-in" placeholder="7" />
                 </div>
                 <div className="col-xs-3">
-                    <select className="form-control" name="poll-expiry-unit">
+                    <select className="form-control" onChange={this.props.updatePollExpiryUnit.bind(null)} name="poll-expiry-unit">
                         <option value="days">days</option>
                         <option value="hours">hours</option>
                         <option value="minutes">minutes</option>
@@ -112,13 +168,13 @@ class NewPoll extends React.Component {
                     <label className="right">Votes allowed per person </label>
                 </div>
                 <div className="col-xs-6">
-                    <input className="form-control" name="num-votes" placeholder="1" />
+                    <input className={this.presentNumVotes()} onChange={this.props.updateNumVotes.bind(null)} name="num-votes" placeholder="1" />
                 </div>
                 <div className="col-xs-6 label-box">
                     <label className="right">Cap poll at </label>
                 </div>
                 <div className="col-xs-4">
-                    <input className="form-control" name="total-votes" placeholder="1000" />
+                    <input className={this.presentTotalVotes()} onChange={this.props.updateTotalVotes.bind(null)} name="total-votes" placeholder="1000" />
                 </div>
                 <div className="col-xs-2 label-box">
                     <label> votes.</label>

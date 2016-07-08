@@ -10,11 +10,31 @@ class App extends React.Component {
             pollData: {pollId: 0},
             options: { 0: '', 1: '', 2: '', 3: ''},
             question: "",
+            pollExpiresIn: "",
+            pollExpiryUnit: "",
+            numVotes: "",
+            totalVotes: "",
             userPolls: this.props.userPolls,
             popularPolls: this.props.popularPolls,
             latestPollId: this.props.latestPollId
 
         }
+    }
+
+    updatePollExpiresIn(event) {
+        this.setState({ pollExpiresIn: event.target.value })
+    }
+
+    updatePollExpiryUnit(event) {
+        this.setState({ pollExpiryUnit: event.target.value })
+    }
+
+    updateNumVotes(event) {
+        this.setState({ numVotes: event.target.value })
+    }
+
+    updateTotalVotes(event) {
+        this.setState({ totalVotes: event.target.value })
     }
 
     changePollContext (newContext) {
@@ -170,8 +190,16 @@ class App extends React.Component {
                 makePoll={this.makePoll.bind(this)}
                 options={this.state.options}
                 question={this.state.question}
+                pollExpiresIn={this.state.pollExpiresIn}
+                pollExpiryUnit={this.state.pollExpiryUnit}
+                numVotes={this.state.numVotes}
+                totalVotes={this.state.totalVotes}
                 updateOptionValue={this.updateOptionValue.bind(this)}
                 updateQuestion={this.updateQuestion.bind(this)}
+                updatePollExpiresIn={this.updatePollExpiresIn.bind(this)}
+                updatePollExpiryUnit={this.updatePollExpiryUnit.bind(this)}
+                updateNumVotes={this.updateNumVotes.bind(this)}
+                updateTotalVotes={this.updateTotalVotes.bind(this)}
                 increaseOptionCount={this.increaseOptionCount.bind(this)}
             />
         )
