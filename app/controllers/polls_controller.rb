@@ -33,9 +33,15 @@ class PollsController < ApplicationController
   end
 
   def show
+    user = authenticate_or_create_user
+    if user.nil?
+      user_votes = []
+    else
+      user_votes = user.votes.where(poll_id: params[:poll_id].to_i)
+    end
     poll = Poll.find_by_id(params[:poll_id].to_i)
     respond_to do |format|
-      format.json { render :json => { :head => "Success", :pollData => poll.poll_data(user_participated=user_participated?), :userParticipated => user_participated? }}
+      format.json { render :json => { :head => "Success", :pollData => poll.poll_data(user_participated=user_participated?), :userPollVotes => user_votes, :userParticipated => user_participated? }}
     end
   end
 

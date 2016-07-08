@@ -209,6 +209,22 @@ select {
   overflow: visible;
   font-family: 'Dosis', sans-serif;
   font-weight: bold;
+  &.user-selected {
+    box-shadow: 0 0 5px 1px transparentize(#ffc107, 0.75);
+    &:after {
+      position: absolute;
+      content: '';
+      top: 50%;
+      transform: translateY(-50%);
+      right: calc(100% + 1em);
+      height: 0.5em;
+      width: 0.5em;
+      box-shadow: 0 0 5px 1px transparentize(#ffc107, 0.75);
+      z-index: 3;
+      border-radius: 50%;
+      background-color: transparentize(lighten(#ffc107, 15%), 0.5);
+    }
+  }
   h5 {
     transform: translateY(-50%);
     padding: 0;
@@ -224,7 +240,15 @@ select {
     position: absolute;
     transform: translateY(-50%);
     top: 50%;
-    right: 2em;
+    right: 3em;
+    color: black;
+  }
+  .vote-percentage {
+    position: absolute;
+    transform: translateY(-50%);
+    top: 50%;
+    right: 1em;
+    font-size: 0.75em;
   }
   .vote {
     position: absolute;

@@ -1,11 +1,14 @@
 class Poll extends React.Component {
     
+    belongsToPoll() {
+        this.props.userVotes.filter()
+    }
     
   render () {
     return(
         <section>
             <PieChart pollData={this.props.pollData}></PieChart>
-            <Progress pollData={this.props.pollData} userParticipated={this.props.userParticipated} vote={this.props.vote.bind(this)}></Progress>
+            <Progress pollData={this.props.pollData} userPollVotes={this.props.userPollVotes} userParticipated={this.props.userParticipated} vote={this.props.vote.bind(this)}></Progress>
             
         </section>
     );

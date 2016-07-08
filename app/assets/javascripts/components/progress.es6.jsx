@@ -1,5 +1,15 @@
 class Progress extends React.Component {
 
+    countVotes(pollSelection) {
+        let count = 0;
+        Object.keys(this.props.userPollVotes).forEach((voteId) => {
+            if (this.props.userPollVotes[voteId].poll_selection_id == pollSelection.id) {
+                count++;
+            }
+        });
+        return count;
+    }
+
     progressBar (pollSelection) {
         return(
             <ProgressBar
@@ -11,6 +21,7 @@ class Progress extends React.Component {
                 pollId={this.props.pollData.pollId}
                 pollOpen={this.props.pollData.pollOpen}
                 userParticipated={this.props.userParticipated}
+                userVotes={this.countVotes(pollSelection)}
                 pollVoteCount={this.props.pollData.voteCount}>
             </ProgressBar>
         );

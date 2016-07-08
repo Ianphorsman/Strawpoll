@@ -20,6 +20,7 @@
       <section class="row">
           <%= react_component 'App',
                               :userParticipated => user_participated?,
+                              :userVotes => @user_votes,
                               :pollContext => 'newPoll',
                               :pollId => 0,
                               :userPolls => @user_polls,
