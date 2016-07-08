@@ -153,7 +153,7 @@ class NewPoll extends React.Component {
         <form>
             <section className="row no-pad">
                 <div className="col-xs-12 new-poll-field">
-                    <input className={this.presentQuestion()} type="text" name="question" autoFocus="true" onChange={this.props.updateQuestion.bind(null)} placeholder="Type your questions here..." />
+                    <input className={this.presentQuestion()} type="text" name="question" autoFocus="true" onChange={this.props.updateQuestion.bind(null)} placeholder="Type your question here..." />
                 </div>
                 {Object.keys(this.props.options).map(this.addSelectionFields.bind(this))}
             </section>
@@ -176,8 +176,10 @@ class NewPoll extends React.Component {
                 <div className="col-xs-6 label-box">
                     <label className="right">Votes allowed per person </label>
                 </div>
-                <div className="col-xs-6">
+                <div className="col-xs-4">
                     <input className={this.presentNumVotes()} onChange={this.props.updateNumVotes.bind(null)} name="num-votes" placeholder="1" />
+                </div>
+                <div className="col-xs-2">
                 </div>
                 <div className="col-xs-6 label-box">
                     <label className="right">Cap poll at </label>
