@@ -35,7 +35,7 @@ class PollsController < ApplicationController
   def show
     poll = Poll.find_by_id(params[:poll_id].to_i)
     respond_to do |format|
-      format.json { render :json => { :head => "Success", :pollData => poll.poll_data(user_participated=user_participated?) }}
+      format.json { render :json => { :head => "Success", :pollData => poll.poll_data(user_participated=user_participated?), :userParticipated => user_participated? }}
     end
   end
 
@@ -43,7 +43,7 @@ class PollsController < ApplicationController
     user = authenticate_or_create_user
     if user_participated?
       respond_to do |format|
-        format.json { render :json => { :head => "Already voted" } }
+        format.json { render :json => { :head => "Already voted", :userParticipated => user_participated? } }
       end
     else
       poll = Poll.find_by_id(params[:poll_id])
@@ -61,7 +61,7 @@ class PollsController < ApplicationController
                              :poll_selection => poll_selection.name
                          })
       respond_to do |format|
-        format.json { render :json => { :head => "Success", :vote => vote, :voteCount => poll.vote_count}}
+        format.json { render :json => { :head => "Success", :vote => vote, :voteCount => poll.vote_count, :userParticipated => user_participated? }}
       end
     end
   end

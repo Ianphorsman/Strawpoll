@@ -117,7 +117,7 @@ class App extends React.Component {
 
     getPoll (path) {
         let successHandler = (data) => {
-            this.setState({ pollId: data.pollData.pollId, pollData: data.pollData }, function() {
+            this.setState({ pollId: data.pollData.pollId, pollData: data.pollData, userParticipated: data.userParticipated }, function() {
                 this.setState({ pollContext: 'showPoll'});
                 this.updateSubscription();
             });
@@ -166,7 +166,7 @@ class App extends React.Component {
                     }
                 })
                 copy.voteCount = data.voteCount
-                this.setState({pollData: copy, userParticipated: true})
+                this.setState({pollData: copy, userParticipated: data.userParticipated})
             }
         }
         $.ajax({

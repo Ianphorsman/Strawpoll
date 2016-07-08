@@ -9,7 +9,7 @@ class ProgressBar extends React.Component {
     }
 
     voteButton () {
-        if (this.props.pollOpen) {
+        if (this.props.pollOpen && !(this.props.userParticipated)) {
             return <button className="vote" type="button" onClick={this.props.vote.bind(this, this.props.pollSelectionId, this.props.pollId)}><i className="fa fa-plus"></i></button>
         }
     }
