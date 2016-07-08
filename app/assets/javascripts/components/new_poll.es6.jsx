@@ -7,7 +7,7 @@ class NewPoll extends React.Component {
                     type="text"
                     name={"option_" + option}
                     onChange={this.props.updateOptionValue.bind(null, option[0])}
-                    className="poll-option form-control"
+                    className={this.presentOption(option)}
                     placeholder="Enter poll option"
                 />
             </div>
@@ -22,14 +22,45 @@ class NewPoll extends React.Component {
         }
     }
 
+    validOption(option) {
+        if (this.props.options[option].length > 0 && this.validOptions()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    presentOption(option) {
+        if (this.validOption(option)) {
+            return "form-control filled";
+        } else {
+            return "form-control";
+        }
+    }
+
+    presentQuestion () {
+        if (this.validQuestion()) {
+            return "form-control filled";
+        } else {
+            return "form-control";
+        }
+    }
+
     validOptions () {
         let count = 0;
+        let duplicatesExist = false;
+        let mappedValues = {};
         for (key in this.props.options) {
             if (this.props.options[key].length > 0) {
                 count++;
             }
+            if (this.props.options[key] in mappedValues && this.props.options[key].length > 0) {
+                duplicatesExist = true;
+            } else {
+                mappedValues[this.props.options[key]] = true;
+            }
         }
-        if (count > 1) {
+        if (count > 1 && duplicatesExist == false) {
             return true;
         } else {
             return false;
@@ -57,7 +88,7 @@ class NewPoll extends React.Component {
         <form>
             <section className="row no-pad">
                 <div className="col-xs-12 new-poll-field">
-                    <input className="form-control" type="text" name="question" onChange={this.props.updateQuestion.bind(null)} placeholder="Type your questions here..." />
+                    <input className={this.presentQuestion()} type="text" name="question" autoFocus="true" onChange={this.props.updateQuestion.bind(null)} placeholder="Type your questions here..." />
                 </div>
                 {Object.keys(this.props.options).map(this.addSelectionFields.bind(this))}
             </section>
