@@ -71,6 +71,7 @@ label {
       &.option {
         margin-bottom: 0.5em;
         margin-top: 0.5em;
+        background-color: darken(#f8f8f8, 5%);
       }
       transition: margin .2s;
       &[name='question'] {
