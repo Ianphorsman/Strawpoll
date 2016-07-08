@@ -62,7 +62,9 @@ class NewPoll extends React.Component {
                 {Object.keys(this.props.options).map(this.addSelectionFields.bind(this))}
             </section>
             <section id="poll-expiry" className="row no-pad new-poll-field">
-                <label className="col-xs-6">Close poll in </label>
+                <div className="col-xs-6 label-box">
+                    <label className="right">Close poll in </label>
+                </div>
                 <div className="col-xs-3">
                     <input className="form-control" type="text" name="poll-expires-in" placeholder="7" />
                 </div>
@@ -75,15 +77,21 @@ class NewPoll extends React.Component {
                 </div>
             </section>
             <section id="votes-per-person" className="row no-pad new-poll-field">
-                <label className="col-xs-6">Votes allowed per person </label>
+                <div className="col-xs-6 label-box">
+                    <label className="right">Votes allowed per person </label>
+                </div>
                 <div className="col-xs-6">
                     <input className="form-control" name="num-votes" placeholder="1" />
                 </div>
-                <label className="col-xs-6">Cap poll at </label>
+                <div className="col-xs-6 label-box">
+                    <label className="right">Cap poll at </label>
+                </div>
                 <div className="col-xs-4">
                     <input className="form-control" name="total-votes" placeholder="1000" />
                 </div>
-                <label className="col-xs-2"> votes.</label>
+                <div className="col-xs-2 label-box">
+                    <label> votes.</label>
+                </div>
             </section>
             <section className="row no-pad new-poll-field">
                 <div className="col-xs-5 col-xs-offset-7">
