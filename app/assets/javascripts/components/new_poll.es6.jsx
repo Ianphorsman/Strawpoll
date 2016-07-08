@@ -23,7 +23,16 @@ class NewPoll extends React.Component {
     }
 
     validOption(option) {
-        if (this.filledOption(option) && this.validOptions()) {
+        let duplicateExists = false;
+        let mappedOptions = {};
+        for (let key in Object.keys(this.props.options)) {
+            if (this.props.options[key] in mappedOptions && this.props.options[key].length > 0 && key <= option) {
+                duplicateExists = true;
+            } else {
+                mappedOptions[this.props.options[key]] = true;
+            }
+        }
+        if (this.filledOption(option) && duplicateExists == false) {
             return true;
         } else {
             return false;
@@ -39,10 +48,12 @@ class NewPoll extends React.Component {
     }
 
     presentOption(option) {
-        if (this.filledOption(option)) {
-            return "form-control filled";
-        } else  {
-            return "form-control";
+        if (this.validOption(option) && this.filledOption(option)) {
+            return "form-control option filled";
+        } else if (!(this.validOption(option)) && this.filledOption(option)) {
+            return "form-control option error";
+        } else {
+            return "form-control option";
         }
     }
 
@@ -58,7 +69,7 @@ class NewPoll extends React.Component {
         let count = 0;
         let duplicatesExist = false;
         let mappedValues = {};
-        for (key in this.props.options) {
+        for (let key in this.props.options) {
             if (this.props.options[key].length > 0) {
                 count++;
             }
@@ -152,11 +163,11 @@ class NewPoll extends React.Component {
                 <div className="col-xs-6 label-box">
                     <label className="right">Close poll in </label>
                 </div>
-                <div className="col-xs-3">
+                <div className="col-xs-4">
                     <input className={this.presentPollExpiresIn()} onChange={this.props.updatePollExpiresIn.bind(null)} type="text" name="poll-expires-in" placeholder="7" />
                 </div>
-                <div className="col-xs-3">
-                    <select className="form-control" onChange={this.props.updatePollExpiryUnit.bind(null)} name="poll-expiry-unit">
+                <div className="col-xs-2">
+                    <select className="form-control " onChange={this.props.updatePollExpiryUnit.bind(null)} name="poll-expiry-unit">
                         <option value="days">days</option>
                         <option value="hours">hours</option>
                         <option value="minutes">minutes</option>

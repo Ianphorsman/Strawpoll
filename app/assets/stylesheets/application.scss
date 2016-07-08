@@ -53,20 +53,76 @@ label {
   border: none;
   box-shadow: none;
   border-radius: 0;
+  text-transform: capitalize;
+  &.option {
+    margin-bottom: 1em;
+    transition: margin .2s;
+  }
+  &[name='question'] {
+    padding: 1.5em;
+    margin-bottom: 3em;
+    transition: margin .2s;
+  }
   &:focus {
     background-color: #f8f8f8;
     box-shadow: none;
     border-radius: 0;
     border: none;
+    &.filled {
+      background-color: darken(#f8f8f8, 5%);
+      font-weight: normal;
+      color: black;
+      &.option {
+        margin-bottom: 1em;
+      }
+      transition: margin .2s;
+      &[name='question'] {
+        font-style: normal;
+        background-color: darken(#f8f8f8, 5%);
+        margin-bottom: 3em;
+        transition: margin .2s;
+      }
+    }
+    &.error {
+      background-color: lighten(#f44336, 15%);
+      font-weight: bold;
+      color: black;
+    }
   }
   &.filled {
-    background-color: darken(#f8f8f8, 5%);
+    background-color: lighten(#8bc34a, 15%);
+    font-weight: bold;
+    color: black;
+    &.option {
+      margin-bottom: 0;
+    }
+    transition: margin .2s;
+    &[name='question'] {
+      font-style: italic;
+      background-color: lighten(#2196f3, 15%);
+      margin-bottom: 0;
+      transition: margin .2s;
+    }
+  }
+  &.error {
+    background-color: lighten(#f44336, 15%);
+    font-weight: bold;
+    color: black;
   }
 }
 button {
   background-color: transparent;
   outline: none;
   border: none;
+}
+
+select {
+  //background-color: $brand-primary !important;
+  color: black !important;
+  option {
+    padding: 0.5em 1em;
+  }
+
 }
 
 .progress {
