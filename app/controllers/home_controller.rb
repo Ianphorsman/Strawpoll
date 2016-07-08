@@ -6,8 +6,10 @@ class HomeController < ApplicationController
     if user.nil?
       @user_polls = []
       @user_votes = []
+      @user_id = user.id
     else
       @user_votes = user.votes
+      @user_id = user.id
       @user_polls = user.polls.map { |poll| { :id => poll.id, :question => poll.name, :vote_count => poll.vote_count }}.sort_by { |poll| -poll[:vote_count] }.first(10)
     end
     @popular_polls = Poll.all.sort_by { |poll| poll.vote_count }.last(10).map { |poll| { :id => poll.id, :question => poll.name, :vote_count => poll.vote_count }}

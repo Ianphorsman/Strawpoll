@@ -42,4 +42,30 @@ class Poll < ApplicationRecord
     data
   end
 
+  def poll_data_by_user user
+    data = {}
+    data[:options] = self.poll_selections.map do |selection|
+      {
+          :label => selection.name,
+          :yValue => user.votes.where(poll_selection_id: selection.id).count,
+          :color => selection.color,
+          :id => selection.id
+      }
+    end
+    data[:voteCount] = user.votes.where(poll_id: self.id).count
+    if ((Time.now.utc - self.created_at) > self.lifespan) || self.total_votes < self.vote_count
+      data[:pollOpen] = false
+    else
+      data[:pollOpen] = true
+    end
+    data[:pollId] = self.id
+    data[:question] = self.name
+    data[:options] = data[:options].sort_by { |obj| obj[:label] }
+    data
+  end
+
+  def vote_count_of_user user
+    user.votes.where(poll_id: self.id).count
+  end
+
 end

@@ -5,6 +5,7 @@ class App extends React.Component {
 
         this.state = {
             userParticipated: this.props.userParticipated,
+            userId: this.props.userId,
             pollContext: this.props.pollContext,
             pollId: this.props.pollId,
             pollData: {pollId: 0},
@@ -241,7 +242,7 @@ class App extends React.Component {
                 this.perform('unfollow')
             },
             received: function(data) {
-                if (that.state.pollId == data.pollId) {
+                if (that.state.pollId == data.pollId && that.state.userId == data.userId) {
                     that.updatePollData(data.pollData);
                     that.setState({ voteCount: data.voteCount })
                 }

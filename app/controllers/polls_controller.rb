@@ -40,8 +40,16 @@ class PollsController < ApplicationController
       user_votes = user.votes.where(poll_id: params[:poll_id].to_i)
     end
     poll = Poll.find_by_id(params[:poll_id].to_i)
+    if user_participated?
+      poll_data = poll.poll_data
+      vote_count = poll.vote_count
+    else
+      poll_data = poll.poll_data_by_user(user)
+      vote_count = poll.vote_count_of_user(user)
+    end
+    puts poll_data
     respond_to do |format|
-      format.json { render :json => { :head => "Success", :pollData => poll.poll_data(user_participated=user_participated?), :voteCount => poll.vote_count, :userPollVotes => user_votes, :userParticipated => user_participated? }}
+      format.json { render :json => { :head => "Success", :pollData => poll_data, :voteCount => vote_count, :userPollVotes => user_votes, :userParticipated => user_participated? }}
     end
   end
 
@@ -55,18 +63,25 @@ class PollsController < ApplicationController
       poll = Poll.find_by_id(params[:poll_id])
       poll_selection = poll.poll_selections.find_by_id(params[:poll_selection_id])
       poll_selection.vote_count += 1
-      if poll_selection.save
-        ActionCable.server.broadcast "polls_#{poll.id}",
-            pollId: poll.id,
-            pollData: poll.poll_data,
-            voteCount: poll.vote_count
-      end
       vote = Vote.create({
                              :user_id => user.id,
                              :poll_id => poll.id,
                              :poll_selection_id => poll_selection.id,
                              :poll_selection => poll_selection.name
                          })
+      if poll_selection.save && user_participated?
+        ActionCable.server.broadcast "polls_#{poll.id}",
+                                     userId: user.id,
+                                     pollId: poll.id,
+                                     pollData: poll.poll_data,
+                                     voteCount: poll.vote_count
+      else
+        ActionCable.server.broadcast "polls_#{poll.id}",
+                                     userId: user.id,
+                                     pollId: poll.id,
+                                     pollData: poll.poll_data_by_user(user),
+                                     voteCount: poll.vote_count_of_user(user)
+      end
       respond_to do |format|
         format.json { render :json => { :head => "Success", :vote => vote, :userParticipated => user_participated? }}
       end
