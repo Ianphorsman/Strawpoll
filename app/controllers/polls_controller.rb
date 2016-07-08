@@ -41,7 +41,7 @@ class PollsController < ApplicationController
     end
     poll = Poll.find_by_id(params[:poll_id].to_i)
     respond_to do |format|
-      format.json { render :json => { :head => "Success", :pollData => poll.poll_data(user_participated=user_participated?), :userPollVotes => user_votes, :userParticipated => user_participated? }}
+      format.json { render :json => { :head => "Success", :pollData => poll.poll_data(user_participated=user_participated?), :voteCount => poll.vote_count, :userPollVotes => user_votes, :userParticipated => user_participated? }}
     end
   end
 
@@ -58,7 +58,8 @@ class PollsController < ApplicationController
       if poll_selection.save
         ActionCable.server.broadcast "polls_#{poll.id}",
             pollId: poll.id,
-            pollData: poll.poll_data
+            pollData: poll.poll_data,
+            voteCount: poll.vote_count
       end
       vote = Vote.create({
                              :user_id => user.id,
@@ -67,7 +68,7 @@ class PollsController < ApplicationController
                              :poll_selection => poll_selection.name
                          })
       respond_to do |format|
-        format.json { render :json => { :head => "Success", :vote => vote, :voteCount => poll.vote_count, :userParticipated => user_participated? }}
+        format.json { render :json => { :head => "Success", :vote => vote, :userParticipated => user_participated? }}
       end
     end
   end

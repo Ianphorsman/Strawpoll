@@ -16,6 +16,7 @@ class App extends React.Component {
             totalVotes: "",
             userVotes: this.props.userVotes,
             userPollVotes: {},
+            voteCount: 1,
             userPolls: this.props.userPolls,
             popularPolls: this.props.popularPolls,
             latestPollId: this.props.latestPollId
@@ -119,7 +120,7 @@ class App extends React.Component {
 
     getPoll (path) {
         let successHandler = (data) => {
-            this.setState({ pollId: data.pollData.pollId, pollData: data.pollData, userPollVotes: data.userPollVotes, userParticipated: data.userParticipated }, function() {
+            this.setState({ pollId: data.pollData.pollId, pollData: data.pollData, voteCount: data.voteCount, userPollVotes: data.userPollVotes, userParticipated: data.userParticipated }, function() {
                 this.setState({ pollContext: 'showPoll'});
                 this.updateSubscription();
             });
@@ -208,7 +209,7 @@ class App extends React.Component {
     }
 
     showPoll () {
-        return <Poll pollData={this.state.pollData} userPollVotes={this.state.userPollVotes} vote={this.vote.bind(this)} userParticipated={this.state.userParticipated}></Poll>
+        return <Poll pollData={this.state.pollData} userPollVotes={this.state.userPollVotes} voteCount={this.state.voteCount} vote={this.vote.bind(this)} userParticipated={this.state.userParticipated}></Poll>
     }
 
     notFound () {
@@ -242,6 +243,7 @@ class App extends React.Component {
             received: function(data) {
                 if (that.state.pollId == data.pollId) {
                     that.updatePollData(data.pollData);
+                    that.setState({ voteCount: data.voteCount })
                 }
             },
             updateStream: function(that) {

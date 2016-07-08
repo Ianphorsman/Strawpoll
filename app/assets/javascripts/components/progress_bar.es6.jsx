@@ -1,7 +1,11 @@
 class ProgressBar extends React.Component {
 
     barWidth () {
-        return "" + Math.round(this.props.pollSelectionYValue / this.props.pollVoteCount * 100) + "%"
+        return "" + Math.round(this.props.pollSelectionYValue / (this.props.pollVoteCount) * 100) + "%"
+    }
+
+    barWidthAmount () {
+        return "" + Math.round(this.props.pollSelectionYValue / (this.props.pollVoteCount+1) * 100) + "%"
     }
 
     getStyle () {
@@ -29,7 +33,7 @@ class ProgressBar extends React.Component {
             <h5 data-poll-selection>{this.props.pollSelectionName}</h5>
             <div className="progress-bar" role="progressbar" style={this.getStyle()} data-color={this.props.pollSelectionColor} aria-valuenow={this.props.pollSelectionYValue} aria-valuemin="0" aria-valuemax={this.props.pollVoteCount}></div>
             <p className="vote-count">{this.props.pollSelectionYValue}</p>
-            <p className="vote-percentage">{this.barWidth()}</p>
+            <p className="vote-percentage">{this.barWidthAmount()}</p>
             {this.voteButton()}
         </div>
     );

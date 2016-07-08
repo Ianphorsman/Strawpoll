@@ -8,7 +8,7 @@ class Poll extends React.Component {
     return(
         <section>
             <PieChart pollData={this.props.pollData}></PieChart>
-            <Progress pollData={this.props.pollData} userPollVotes={this.props.userPollVotes} userParticipated={this.props.userParticipated} vote={this.props.vote.bind(this)}></Progress>
+            <Progress pollData={this.props.pollData} voteCount={this.props.voteCount} userPollVotes={this.props.userPollVotes} userParticipated={this.props.userParticipated} vote={this.props.vote.bind(this)}></Progress>
             
         </section>
     );

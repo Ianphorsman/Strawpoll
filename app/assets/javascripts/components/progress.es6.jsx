@@ -22,7 +22,7 @@ class Progress extends React.Component {
                 pollOpen={this.props.pollData.pollOpen}
                 userParticipated={this.props.userParticipated}
                 userVotes={this.countVotes(pollSelection)}
-                pollVoteCount={this.props.pollData.voteCount}>
+                pollVoteCount={this.props.voteCount}>
             </ProgressBar>
         );
     }
