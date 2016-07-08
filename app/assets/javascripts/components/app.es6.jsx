@@ -92,7 +92,7 @@ class App extends React.Component {
 
     makePoll () {
         let successHandler = (data) => {
-            this.setState({ pollId: data.pollData.pollId, pollData: data.pollData, userPolls: data.userPolls, popularPolls: data.popularPolls }, function() {
+            this.setState({ pollId: data.pollData.pollId, pollData: data.pollData, userPolls: data.userPolls, popularPolls: data.popularPolls, userParticipated: data.userParticipated }, function() {
                 this.setState({ pollContext: 'showPoll'});
                 this.updateSubscription();
             });

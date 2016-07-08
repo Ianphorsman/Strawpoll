@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  ActionCable.server.config.allowed_request_origins = [/192.168.1.*/, '127.0.0.1', 'http://localhost:3000']
   def user_participated?
     user = authenticate_or_create_user
     poll = Poll.find_by_id(params[:poll_id]) || Poll.last
