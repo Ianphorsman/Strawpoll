@@ -9,6 +9,7 @@ class App extends React.Component {
             pollId: this.props.pollId,
             pollData: {pollId: 0},
             options: { 0: '', 1: '', 2: '', 3: ''},
+            question: "",
             userPolls: this.props.userPolls,
             popularPolls: this.props.popularPolls,
             latestPollId: this.props.latestPollId
@@ -62,6 +63,10 @@ class App extends React.Component {
         this.setState({ options })
     }
 
+    updateQuestion(event) {
+        this.setState({ question: event.target.value })
+    }
+
     makePoll () {
         let successHandler = (data) => {
             this.setState({ pollId: data.pollData.pollId, pollData: data.pollData, userPolls: data.userPolls, popularPolls: data.popularPolls }, function() {
@@ -92,7 +97,6 @@ class App extends React.Component {
 
     getPoll (path) {
         let successHandler = (data) => {
-            console.log(data.pollData.pollId);
             this.setState({ pollId: data.pollData.pollId, pollData: data.pollData }, function() {
                 this.setState({ pollContext: 'showPoll'});
                 this.updateSubscription();
@@ -156,7 +160,6 @@ class App extends React.Component {
             url: '/poll/' + pollId + '/vote/' + pollSelectionId,
             success: successHandler.bind(this)
         })
-        console.log(pollSelectionId)
     }
 
     /* Poll Contexts */
@@ -166,8 +169,9 @@ class App extends React.Component {
             <NewPoll
                 makePoll={this.makePoll.bind(this)}
                 options={this.state.options}
-                values={this.state.values}
+                question={this.state.question}
                 updateOptionValue={this.updateOptionValue.bind(this)}
+                updateQuestion={this.updateQuestion.bind(this)}
                 increaseOptionCount={this.increaseOptionCount.bind(this)}
             />
         )

@@ -1,7 +1,5 @@
 class NewPoll extends React.Component {
 
-
-
     addSelectionFields(option) {
         return (
             <div className="col-xs-12 new-poll-field">
@@ -16,12 +14,50 @@ class NewPoll extends React.Component {
         )
     }
 
+    validQuestion () {
+        if (this.props.question.length > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    validOptions () {
+        let count = 0;
+        for (key in this.props.options) {
+            if (this.props.options[key].length > 0) {
+                count++;
+            }
+        }
+        if (count > 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    readyToSubmit () {
+        if (this.validQuestion() && this.validOptions()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    createPollEnabled() {
+        if (this.readyToSubmit()) {
+            return "btn btn-primary";
+        } else {
+            return "btn btn-primary disabled";
+        }
+    }
+
   render () {
     return(
         <form>
             <section className="row no-pad">
                 <div className="col-xs-12 new-poll-field">
-                    <input className="form-control" type="text" name="question" placeholder="Type your questions here..." />
+                    <input className="form-control" type="text" name="question" onChange={this.props.updateQuestion.bind(null)} placeholder="Type your questions here..." />
                 </div>
                 {Object.keys(this.props.options).map(this.addSelectionFields.bind(this))}
             </section>
@@ -53,7 +89,7 @@ class NewPoll extends React.Component {
                 <div className="col-xs-5 col-xs-offset-7">
                     <div className="btn-group btn-group-justified" role="group">
                         <a className="btn btn-default" type="button" onClick={this.props.increaseOptionCount.bind(null)}>Add Option</a>
-                        <a className="btn btn-primary" type="button" onClick={this.props.makePoll.bind(null)}>Create</a>
+                        <a className={this.createPollEnabled()} type="button" onClick={this.props.makePoll.bind(null)}>Create</a>
                     </div>
                 </div>
             </section>
