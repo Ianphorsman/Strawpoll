@@ -24,12 +24,10 @@ class NewPoll extends React.Component {
 
     validOption(option) {
         let duplicateExists = false;
-        let mappedOptions = {};
+        let duplicateValue = this.props.options[option];
         for (let key in Object.keys(this.props.options)) {
-            if (this.props.options[key] in mappedOptions && this.props.options[key].length > 0 && key <= option) {
+            if (this.props.options[key] === duplicateValue && this.props.options[key].length > 0 && key < option) {
                 duplicateExists = true;
-            } else {
-                mappedOptions[this.props.options[key]] = true;
             }
         }
         if (this.filledOption(option) && duplicateExists == false) {
@@ -144,9 +142,9 @@ class NewPoll extends React.Component {
 
     createPollEnabled() {
         if (this.readyToSubmit()) {
-            return "btn btn-primary";
+            return "btn create-poll";
         } else {
-            return "btn btn-primary disabled";
+            return "btn create-poll disabled";
         }
     }
 
@@ -194,7 +192,7 @@ class NewPoll extends React.Component {
             <section className="row no-pad new-poll-field">
                 <div className="col-xs-5 col-xs-offset-7">
                     <div className="btn-group btn-group-justified" role="group">
-                        <a className="btn btn-default" type="button" onClick={this.props.increaseOptionCount.bind(null)}>Add Option</a>
+                        <a className="btn btn-default add-option" type="button" onClick={this.props.increaseOptionCount.bind(null)}>Add Option</a>
                         <a className={this.createPollEnabled()} type="button" onClick={this.props.makePoll.bind(null)}>Create</a>
                     </div>
                 </div>
