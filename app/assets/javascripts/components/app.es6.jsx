@@ -93,7 +93,7 @@ class App extends React.Component {
 
     makePoll () {
         let successHandler = (data) => {
-            this.setState({ pollId: data.pollData.pollId, pollData: data.pollData, userPolls: data.userPolls, popularPolls: data.popularPolls, userParticipated: data.userParticipated }, function() {
+            this.setState({ pollId: data.pollData.pollId, pollData: data.pollData, userPolls: data.userPolls, userPollVotes: data.userPollVotes, popularPolls: data.popularPolls, userParticipated: data.userParticipated }, function() {
                 this.setState({ pollContext: 'showPoll'});
                 this.updateSubscription();
             });
@@ -161,16 +161,7 @@ class App extends React.Component {
     vote (pollSelectionId, pollId) {
         let successHandler = (data) => {
             if (data.head !== "Already voted") {
-                /*let copy = Object.assign({}, this.state.pollData)
-                copy.options.map((selection) => {
-                    if (selection.id == pollSelectionId) {
-                        return Object.assign(selection, {yValue: selection.yValue})
-                    } else {
-                        return selection
-                    }
-                })
-                copy.voteCount = data.voteCount*/
-                this.setState({userParticipated: data.userParticipated, userVotes: Object.assign(this.state.userVotes, data.vote)})
+                this.setState({userParticipated: data.userParticipated, userPollVotes: data.userPollVotes, userVotes: Object.assign(this.state.userVotes, data.vote)})
             }
         }
         $.ajax({

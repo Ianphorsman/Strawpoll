@@ -5,6 +5,11 @@ class PollsController < ApplicationController
 
   def create
     user = authenticate_or_create_user
+    if user.nil?
+      user_votes = []
+    else
+      user_votes = user.votes.where(poll_id: params[:poll_id].to_i)
+    end
     poll = Poll.new({
         :user_id => user.id,
         :lifespan => get_expiry_date(params[:poll_expires_in], params[:poll_expiry_unit]),
@@ -28,7 +33,7 @@ class PollsController < ApplicationController
       popular_polls = Poll.all.sort_by { |poll| poll.vote_count }.last(10).map { |poll| { :id => poll.id, :question => poll.name, :vote_count => poll.vote_count }}
     end
     respond_to do |format|
-      format.json { render :json => { :head => "Success", :pollData => poll.poll_data(user_participated=false), :popularPolls => popular_polls, :userPolls => user_polls }}
+      format.json { render :json => { :head => "Success", :pollData => poll.poll_data(user_participated=false), :userPollVotes => user_votes, :popularPolls => popular_polls, :userPolls => user_polls }}
     end
   end
 
@@ -55,6 +60,11 @@ class PollsController < ApplicationController
 
   def vote
     user = authenticate_or_create_user
+    if user.nil?
+      user_votes = []
+    else
+      user_votes = user.votes.where(poll_id: params[:poll_id].to_i)
+    end
     if user_participated?
       respond_to do |format|
         format.json { render :json => { :head => "Already voted", :userParticipated => user_participated? } }
@@ -83,7 +93,7 @@ class PollsController < ApplicationController
                                      voteCount: poll.vote_count_of_user(user)
       end
       respond_to do |format|
-        format.json { render :json => { :head => "Success", :vote => vote, :userParticipated => user_participated? }}
+        format.json { render :json => { :head => "Success", :vote => vote, :userParticipated => user_participated?, :userPollVotes => user_votes }}
       end
     end
   end
