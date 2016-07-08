@@ -16,7 +16,7 @@ class App extends React.Component {
             totalVotes: "",
             userVotes: this.props.userVotes,
             userPollVotes: {},
-            voteCount: 1,
+            voteCount: 0,
             userPolls: this.props.userPolls,
             popularPolls: this.props.popularPolls,
             latestPollId: this.props.latestPollId
@@ -160,7 +160,7 @@ class App extends React.Component {
     vote (pollSelectionId, pollId) {
         let successHandler = (data) => {
             if (data.head !== "Already voted") {
-                let copy = Object.assign({}, this.state.pollData)
+                /*let copy = Object.assign({}, this.state.pollData)
                 copy.options.map((selection) => {
                     if (selection.id == pollSelectionId) {
                         return Object.assign(selection, {yValue: selection.yValue})
@@ -168,8 +168,8 @@ class App extends React.Component {
                         return selection
                     }
                 })
-                copy.voteCount = data.voteCount
-                this.setState({pollData: copy, userParticipated: data.userParticipated, userVotes: Object.assign(this.state.userVotes, data.vote)})
+                copy.voteCount = data.voteCount*/
+                this.setState({userParticipated: data.userParticipated, userVotes: Object.assign(this.state.userVotes, data.vote)})
             }
         }
         $.ajax({

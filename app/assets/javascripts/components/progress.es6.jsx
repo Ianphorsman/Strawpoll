@@ -28,10 +28,10 @@ class Progress extends React.Component {
     }
 
     messages() {
-        if (this.props.pollData.voteCount == 0) {
-            return "You must vote before results will be shown."
+        if (this.props.voteCount == 0) {
+            return "No votes have been cast yet."
         } else {
-            return "Total Votes so far: " + this.props.pollData.voteCount + " ."
+            return "Total Votes so far: " + this.props.voteCount + " ."
         }
     }
 
