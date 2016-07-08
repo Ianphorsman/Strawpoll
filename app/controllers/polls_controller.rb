@@ -14,6 +14,8 @@ class PollsController < ApplicationController
         :user_id => user.id,
         :lifespan => get_expiry_date(params[:poll_expires_in], params[:poll_expiry_unit]),
         :votes_per_person => params[:votes_per_person].to_i,
+        :votes_required_per_person => params[:votes_required_per_person].to_i,
+        :duplicate_votes_allowed => params[:duplicate_votes_allowed],
         :total_votes => params[:total_votes].to_i,
         :name => params[:question]
                     })
@@ -45,7 +47,7 @@ class PollsController < ApplicationController
       user_votes = user.votes.where(poll_id: params[:poll_id].to_i)
     end
     poll = Poll.find_by_id(params[:poll_id].to_i)
-    if user_participated?
+    if user_has_voted?
       poll_data = poll.poll_data
       vote_count = poll.vote_count
     else
@@ -54,7 +56,7 @@ class PollsController < ApplicationController
     end
     puts poll_data
     respond_to do |format|
-      format.json { render :json => { :head => "Success", :pollData => poll_data, :voteCount => vote_count, :userPollVotes => user_votes, :userParticipated => user_participated? }}
+      format.json { render :json => { :head => "Success", :pollData => poll_data, :voteCount => vote_count, :userPollVotes => user_votes, :userHasVoted => user_has_voted?, :userParticipated => user_participated? }}
     end
   end
 
@@ -79,7 +81,7 @@ class PollsController < ApplicationController
                              :poll_selection_id => poll_selection.id,
                              :poll_selection => poll_selection.name
                          })
-      if poll_selection.save && user_participated?
+      if poll_selection.save && user_has_voted?
         ActionCable.server.broadcast "polls_#{poll.id}",
                                      userId: user.id,
                                      pollId: poll.id,
@@ -93,7 +95,7 @@ class PollsController < ApplicationController
                                      voteCount: poll.vote_count_of_user(user)
       end
       respond_to do |format|
-        format.json { render :json => { :head => "Success", :vote => vote, :userParticipated => user_participated?, :userPollVotes => user_votes }}
+        format.json { render :json => { :head => "Success", :vote => vote, :userHasVoted => user_has_voted?, :userParticipated => user_participated?, :userPollVotes => user_votes }}
       end
     end
   end

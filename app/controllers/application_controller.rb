@@ -4,16 +4,28 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   ActionCable.server.config.allowed_request_origins = [/192.168.1.*/, '127.0.0.1', 'http://localhost:3000']
+
   def user_participated?
     user = authenticate_or_create_user
     poll = Poll.find_by_id(params[:poll_id]) || Poll.last
-    if user.votes.where(poll_id: params[:poll_id]).length >= poll.votes_per_person
+    if user.votes.where(poll_id: poll.id).length >= poll.votes_per_person
       true
     else
       false
     end
   end
   helper_method :user_participated?
+
+  def user_has_voted?
+    user = authenticate_or_create_user
+    poll = Poll.find_by_id(params[:poll_id]) || Poll.last
+    if user.votes.where(poll_id: poll.id).length >= poll.votes_required_per_person
+      true
+    else
+      false
+    end
+  end
+  helper_method :user_has_voted?
 
   private
 

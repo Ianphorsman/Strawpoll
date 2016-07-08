@@ -132,6 +132,22 @@ class NewPoll extends React.Component {
         }
     }
 
+    validVotesRequired() {
+        if (this.props.votesRequired > 0 && this.props.votesRequired <= this.props.numVotes) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    presentVotesRequired() {
+        if (this.validVotesRequired()) {
+            return "form-control filled poll-option";
+        } else {
+            return "form-control";
+        }
+    }
+
     readyToSubmit () {
         if (this.validQuestion() && this.validOptions()) {
             return true;
@@ -178,6 +194,22 @@ class NewPoll extends React.Component {
                 </div>
                 <div className="col-xs-4">
                     <input className={this.presentNumVotes()} onChange={this.props.updateNumVotes.bind(null)} name="num-votes" placeholder="1" />
+                </div>
+                <div className="col-xs-2">
+                </div>
+                <div className="col-xs-6 label-box">
+                    <label className="right">Votes required per person </label>
+                </div>
+                <div className="col-xs-4">
+                    <input className={this.presentVotesRequired()} onChange={this.props.updateVotesRequired.bind(null)} name="votes-required" placeholder="1" />
+                </div>
+                <div className="col-xs-2">
+                </div>
+                <div className="col-xs-6 label-box">
+                    <label className="right">Duplicate Votes Allowed </label>
+                </div>
+                <div className="col-xs-4">
+                    <input type="checkbox" className="form-control" onChange={this.props.updateDuplicateVotesAllowed.bind(null)} name="duplicate-votes-allowed" />
                 </div>
                 <div className="col-xs-2">
                 </div>

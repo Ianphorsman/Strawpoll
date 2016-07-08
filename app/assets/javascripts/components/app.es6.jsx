@@ -5,6 +5,7 @@ class App extends React.Component {
 
         this.state = {
             userParticipated: this.props.userParticipated,
+            userHasVoted: this.props.userHasVoted,
             userId: this.props.userId,
             pollContext: this.props.pollContext,
             pollId: this.props.pollId,
@@ -14,6 +15,8 @@ class App extends React.Component {
             pollExpiresIn: "",
             pollExpiryUnit: "",
             numVotes: "",
+            votesRequired: "",
+            duplicateVotesAllowed: false,
             totalVotes: "",
             userVotes: this.props.userVotes,
             userPollVotes: {},
@@ -35,6 +38,14 @@ class App extends React.Component {
 
     updateNumVotes(event) {
         this.setState({ numVotes: event.target.value })
+    }
+
+    updateVotesRequired(event) {
+        this.setState({ votesRequired: event.target.value })
+    }
+
+    updateDuplicateVotesAllowed(event) {
+        this.setState({ duplicateVotesAllowed: event.target.checked })
     }
 
     updateTotalVotes(event) {
@@ -67,13 +78,25 @@ class App extends React.Component {
             } else {
                 return $("[name='total-votes']").val();
             }
-        }
+        };
+        let votesRequired = () => {
+            if ($("[name='votes-required']").val() == 0) {
+                return 1;
+            } else {
+                return $("[name='votes-required']").val();
+            }
+        };
+        let duplicateVotesAllowed = () => {
+            return this.state.duplicateVotesAllowed;
+        };
         return {
             "utf8" : "checked",
             "question" : $("[name='question']").val(),
             "poll_expires_in": expireAmount(),
             "poll_expiry_unit": $("[name='poll-expiry-unit']").val(),
             "votes_per_person": numVotes(),
+            "votes_required_per_person": votesRequired(),
+            "duplicate_votes_allowed": duplicateVotesAllowed(),
             "total_votes": totalVotes(),
             "options" : Object.keys(this.state.options).map((k) => { return this.state.options[k] })
         }
@@ -121,7 +144,14 @@ class App extends React.Component {
 
     getPoll (path) {
         let successHandler = (data) => {
-            this.setState({ pollId: data.pollData.pollId, pollData: data.pollData, voteCount: data.voteCount, userPollVotes: data.userPollVotes, userParticipated: data.userParticipated }, function() {
+            this.setState({
+                pollId: data.pollData.pollId,
+                pollData: data.pollData,
+                voteCount: data.voteCount,
+                userPollVotes: data.userPollVotes,
+                userHasVoted: data.userHasVoted,
+                userParticipated: data.userParticipated
+            }, function() {
                 this.setState({ pollContext: 'showPoll'});
                 this.updateSubscription();
             });
@@ -161,7 +191,12 @@ class App extends React.Component {
     vote (pollSelectionId, pollId) {
         let successHandler = (data) => {
             if (data.head !== "Already voted") {
-                this.setState({userParticipated: data.userParticipated, userPollVotes: data.userPollVotes, userVotes: Object.assign(this.state.userVotes, data.vote)})
+                this.setState({
+                    userParticipated: data.userParticipated,
+                    userHasVoted: data.userHasVoted,
+                    userPollVotes: data.userPollVotes,
+                    userVotes: Object.assign(this.state.userVotes, data.vote)
+                })
             }
         }
         $.ajax({
@@ -194,6 +229,8 @@ class App extends React.Component {
                 updatePollExpiresIn={this.updatePollExpiresIn.bind(this)}
                 updatePollExpiryUnit={this.updatePollExpiryUnit.bind(this)}
                 updateNumVotes={this.updateNumVotes.bind(this)}
+                updateVotesRequired={this.updateVotesRequired.bind(this)}
+                updateDuplicateVotesAllowed={this.updateDuplicateVotesAllowed.bind(this)}
                 updateTotalVotes={this.updateTotalVotes.bind(this)}
                 increaseOptionCount={this.increaseOptionCount.bind(this)}
             />
@@ -201,7 +238,17 @@ class App extends React.Component {
     }
 
     showPoll () {
-        return <Poll pollData={this.state.pollData} userPollVotes={this.state.userPollVotes} voteCount={this.state.voteCount} vote={this.vote.bind(this)} userParticipated={this.state.userParticipated}></Poll>
+        return(
+            <Poll
+                pollData={this.state.pollData}
+                userPollVotes={this.state.userPollVotes}
+                voteCount={this.state.voteCount}
+                vote={this.vote.bind(this)}
+                userHasVoted={this.state.userHasVoted}
+                userParticipated={this.state.userParticipated}>
+
+            </Poll>
+        )
     }
 
     notFound () {

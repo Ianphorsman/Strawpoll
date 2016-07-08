@@ -38,6 +38,7 @@ class Poll < ApplicationRecord
     end
     data[:pollId] = self.id
     data[:question] = self.name
+    data[:duplicate_votes_allowed] = self.duplicate_votes_allowed
     data[:options] = data[:options].sort_by { |obj| obj[:label] }
     data
   end
@@ -60,6 +61,7 @@ class Poll < ApplicationRecord
     end
     data[:pollId] = self.id
     data[:question] = self.name
+    data[:duplicate_votes_allowed] = self.duplicate_votes_allowed
     data[:options] = data[:options].sort_by { |obj| obj[:label] }
     data
   end
