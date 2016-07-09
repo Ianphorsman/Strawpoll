@@ -5,8 +5,10 @@ Rails.application.routes.draw do
 
   mount ActionCable.server => '/cable'
 
-  get '/poll/:poll_id' => 'polls#show'
   get '/poll/latest' => 'polls#show_latest'
+  get '/poll/:poll_id' => 'polls#show'
+
+
 
   get '/home/show/:poll_id' => 'home#show'
 

@@ -115,6 +115,7 @@ class PollsController < ApplicationController
   def show_latest
     user = authenticate_or_create_user
     poll = Poll.last
+    puts "Latest poll #{poll}"
     if user.nil?
       user_votes = []
     else

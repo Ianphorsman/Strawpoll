@@ -261,7 +261,7 @@ select {
   }
   .vote {
     position: absolute;
-    left: 100%;
+    left: calc(100% + 1em);
     transform: translateY(-50%);
     top: 50%;
     color: #ffc107;
