@@ -23,7 +23,7 @@ var MainMenu = React.createClass({
                 <div className="navbar-collapse collapse" id="main-menu">
                     <ul className="nav navbar-nav navbar-left">
                         <li>
-                            <a type="button" onClick={this.props.getPoll.bind(this, this.props.latestPoll)}>Latest Poll</a>
+                            <a type="button" onClick={this.props.getPoll.bind(this, 'latest')}>Latest Poll</a>
                         </li>
                         <li>
                             <a type="button" onClick={this.props.changePollContext.bind(this, 'newPoll')}>New Poll</a>

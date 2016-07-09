@@ -35,7 +35,7 @@ class PollsController < ApplicationController
       popular_polls = Poll.all.sort_by { |poll| poll.vote_count }.last(10).map { |poll| { :id => poll.id, :question => poll.name, :vote_count => poll.vote_count }}
     end
     respond_to do |format|
-      format.json { render :json => { :head => "Success", :pollData => poll.poll_data(user_participated=false), :userPollVotes => user_votes, :popularPolls => popular_polls, :userPolls => user_polls }}
+      format.json { render :json => { :head => "Success", :pollData => poll.poll_data(user_participated=false), :userPollVotes => user_votes, :popularPolls => popular_polls, :userPolls => user_polls, :shareLink => share_link(poll.id) }}
     end
   end
 
@@ -56,7 +56,17 @@ class PollsController < ApplicationController
     end
     puts poll_data
     respond_to do |format|
-      format.json { render :json => { :head => "Success", :pollData => poll_data, :voteCount => vote_count, :userPollVotes => user_votes, :userHasVoted => user_has_voted?, :userParticipated => user_participated? }}
+      format.json do
+        render :json => {
+            :head => "Success",
+            :pollData => poll_data,
+            :voteCount => vote_count,
+            :userPollVotes => user_votes,
+            :userHasVoted => user_has_voted?,
+            :shareLink => share_link(poll.id),
+            :userParticipated => user_participated?
+        }
+      end
     end
   end
 
@@ -98,6 +108,37 @@ class PollsController < ApplicationController
 
       respond_to do |format|
         format.json { render :json => { :head => "Success", :vote => vote, :userHasVoted => user_has_voted?, :userParticipated => user_participated?, :userPollVotes => user_votes }}
+      end
+    end
+  end
+
+  def show_latest
+    user = authenticate_or_create_user
+    poll = Poll.last
+    if user.nil?
+      user_votes = []
+    else
+      user_votes = user.votes.where(poll_id: poll.id)
+    end
+    if user_has_voted?
+      poll_data = poll.poll_data
+      vote_count = poll.vote_count
+    else
+      poll_data = poll.poll_data_by_user(user)
+      vote_count = poll.vote_count_of_user(user)
+    end
+    puts poll_data
+    respond_to do |format|
+      format.json do
+        render :json => {
+            :head => "Success",
+            :pollData => poll_data,
+            :voteCount => vote_count,
+            :userPollVotes => user_votes,
+            :userHasVoted => user_has_voted?,
+            :shareLink => share_link(poll.id),
+            :userParticipated => user_participated?
+        }
       end
     end
   end

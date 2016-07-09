@@ -27,6 +27,11 @@ class ApplicationController < ActionController::Base
   end
   helper_method :user_has_voted?
 
+  def share_link poll_id
+    return "/home/show/#{poll_id}"
+  end
+  helper_method :share_link
+
   private
 
   def authenticate_or_create_user

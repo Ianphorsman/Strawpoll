@@ -16,17 +16,22 @@
   </head>
 
   <body>
-    <%= yield %>
+    <%= yield :home %>
       <section class="row">
           <%= react_component 'App',
                               :userParticipated => user_participated?,
                               :userHasVoted => user_has_voted?,
                               :userVotes => @user_votes,
-                              :pollContext => 'newPoll',
-                              :pollId => 0,
+                              :userPollVotes => @user_poll_votes,
+                              :pollContext => @poll_context,
+                              :pollId => @poll_id,
                               :userId => @user_id,
                               :userPolls => @user_polls,
                               :popularPolls => @popular_polls,
+                              :fullAccessToStream => @full_access_to_stream,
+                              :pollData => @poll_data,
+                              :voteCount => @vote_count,
+                              :shareLink => @share_link,
                               :latestPollId => @latest
           %>
       </section>

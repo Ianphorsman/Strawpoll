@@ -6,11 +6,12 @@ class App extends React.Component {
         this.state = {
             userParticipated: this.props.userParticipated,
             userHasVoted: this.props.userHasVoted,
+            shareLink: this.props.shareLink,
             userId: this.props.userId,
-            fullAccessToStream: false,
+            fullAccessToStream: this.props.fullAccessToStream,
             pollContext: this.props.pollContext,
             pollId: this.props.pollId,
-            pollData: {pollId: 0},
+            pollData: this.props.pollData,
             options: { 0: '', 1: '', 2: '', 3: ''},
             question: "",
             pollExpiresIn: "",
@@ -20,8 +21,8 @@ class App extends React.Component {
             duplicateVotesAllowed: false,
             totalVotes: "",
             userVotes: this.props.userVotes,
-            userPollVotes: {},
-            voteCount: 0,
+            userPollVotes: this.props.userPollVotes,
+            voteCount: this.props.voteCount,
             userPolls: this.props.userPolls,
             popularPolls: this.props.popularPolls,
             latestPollId: this.props.latestPollId
@@ -54,6 +55,18 @@ class App extends React.Component {
     }
 
     changePollContext (newContext) {
+        if (newContext == 'newPoll') {
+            this.setState({
+                options: { 0: '', 1: '', 2: '', 3: ''},
+                question: "",
+                pollExpiresIn: "",
+                pollExpiryUnit: "",
+                numVotes: "",
+                votesRequired: "",
+                duplicateVotesAllowed: false,
+                totalVotes: ""
+            });
+        }
         this.setState({ pollContext: newContext })
     }
 
@@ -117,7 +130,7 @@ class App extends React.Component {
 
     makePoll () {
         let successHandler = (data) => {
-            this.setState({ pollId: data.pollData.pollId, pollData: data.pollData, userPolls: data.userPolls, userPollVotes: data.userPollVotes, popularPolls: data.popularPolls, userParticipated: data.userParticipated }, function() {
+            this.setState({ pollId: data.pollData.pollId, pollData: data.pollData, userPolls: data.userPolls, userPollVotes: data.userPollVotes, popularPolls: data.popularPolls, userParticipated: data.userParticipated, shareLink: data.shareLink }, function() {
                 this.setState({ pollContext: 'showPoll'});
                 this.updateSubscription();
             });
@@ -151,6 +164,7 @@ class App extends React.Component {
                 voteCount: data.voteCount,
                 userPollVotes: data.userPollVotes,
                 userHasVoted: data.userHasVoted,
+                shareLink: data.shareLink,
                 userParticipated: data.userParticipated
             }, function() {
                 this.setState({ pollContext: 'showPoll'});
@@ -247,11 +261,15 @@ class App extends React.Component {
                 voteCount={this.state.voteCount}
                 vote={this.vote.bind(this)}
                 userHasVoted={this.state.userHasVoted}
-                duplicateVotesAllowed={this.state.pollData.duplicateVotesAllowed}
+                duplicateVotesAllowed={this.state.pollData.duplicate_votes_allowed}
                 userParticipated={this.state.userParticipated}>
 
             </Poll>
         )
+    }
+
+    templatePoll() {
+        this.setState({ pollContext: 'showPoll' });
     }
 
     notFound () {
