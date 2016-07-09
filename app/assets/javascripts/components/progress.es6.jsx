@@ -22,6 +22,7 @@ class Progress extends React.Component {
                 pollOpen={this.props.pollData.pollOpen}
                 userParticipated={this.props.userParticipated}
                 userHasVoted={this.props.userHasVoted}
+                duplicateVotesAllowed={this.props.duplicateVotesAllowed}
                 userVotes={this.countVotes(pollSelection)}
                 pollVoteCount={this.props.voteCount}>
             </ProgressBar>

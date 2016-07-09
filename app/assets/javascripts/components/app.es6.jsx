@@ -225,6 +225,7 @@ class App extends React.Component {
                 pollExpiryUnit={this.state.pollExpiryUnit}
                 numVotes={this.state.numVotes}
                 totalVotes={this.state.totalVotes}
+                votesRequired={this.state.votesRequired}
                 updateOptionValue={this.updateOptionValue.bind(this)}
                 updateQuestion={this.updateQuestion.bind(this)}
                 updatePollExpiresIn={this.updatePollExpiresIn.bind(this)}
@@ -246,6 +247,7 @@ class App extends React.Component {
                 voteCount={this.state.voteCount}
                 vote={this.vote.bind(this)}
                 userHasVoted={this.state.userHasVoted}
+                duplicateVotesAllowed={this.state.pollData.duplicateVotesAllowed}
                 userParticipated={this.state.userParticipated}>
 
             </Poll>

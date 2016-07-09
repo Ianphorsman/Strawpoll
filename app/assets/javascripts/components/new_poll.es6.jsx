@@ -133,7 +133,7 @@ class NewPoll extends React.Component {
     }
 
     validVotesRequired() {
-        if (this.props.votesRequired > 0 && this.props.votesRequired <= this.props.numVotes) {
+        if ((this.props.votesRequired > 0 && this.props.votesRequired <= this.props.numVotes)) {
             return true;
         } else {
             return false;
@@ -181,7 +181,7 @@ class NewPoll extends React.Component {
                     <input className={this.presentPollExpiresIn()} onChange={this.props.updatePollExpiresIn.bind(null)} type="text" name="poll-expires-in" placeholder="7" />
                 </div>
                 <div className="col-xs-2">
-                    <select className="form-control " onChange={this.props.updatePollExpiryUnit.bind(null)} name="poll-expiry-unit">
+                    <select className="form-control" onChange={this.props.updatePollExpiryUnit.bind(null)} name="poll-expiry-unit">
                         <option value="days">days</option>
                         <option value="hours">hours</option>
                         <option value="minutes">minutes</option>

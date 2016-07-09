@@ -17,6 +17,7 @@ class Poll extends React.Component {
                 voteCount={this.props.voteCount}
                 userPollVotes={this.props.userPollVotes}
                 userHasVoted={this.props.userHasVoted}
+                duplicateVotesAllowed={this.props.duplicateVotesAllowed}
                 userParticipated={this.props.userParticipated}
                 vote={this.props.vote.bind(this)}>
 
