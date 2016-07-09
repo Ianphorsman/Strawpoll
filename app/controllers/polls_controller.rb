@@ -75,25 +75,27 @@ class PollsController < ApplicationController
       poll = Poll.find_by_id(params[:poll_id])
       poll_selection = poll.poll_selections.find_by_id(params[:poll_selection_id])
       poll_selection.vote_count += 1
+      poll_selection.save
       vote = Vote.create({
                              :user_id => user.id,
                              :poll_id => poll.id,
                              :poll_selection_id => poll_selection.id,
                              :poll_selection => poll_selection.name
                          })
-      if poll_selection.save && user_has_voted?
-        ActionCable.server.broadcast "polls_#{poll.id}",
+
+      ActionCable.server.broadcast "polls_#{poll.id}_user_#{user.id}",
                                      userId: user.id,
                                      pollId: poll.id,
-                                     pollData: poll.poll_data,
-                                     voteCount: poll.vote_count
-      else
-        ActionCable.server.broadcast "polls_#{poll.id}",
-                                     userId: user.id,
-                                     pollId: poll.id,
+                                     enableAccess: user_has_voted?,
                                      pollData: poll.poll_data_by_user(user),
                                      voteCount: poll.vote_count_of_user(user)
-      end
+
+      ActionCable.server.broadcast "polls_#{poll.id}",
+                                   userId: user.id,
+                                   pollId: poll.id,
+                                   pollData: poll.poll_data,
+                                   voteCount: poll.vote_count
+
       respond_to do |format|
         format.json { render :json => { :head => "Success", :vote => vote, :userHasVoted => user_has_voted?, :userParticipated => user_participated?, :userPollVotes => user_votes }}
       end

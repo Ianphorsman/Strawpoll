@@ -8,7 +8,7 @@ class Poll < ApplicationRecord
     self.poll_selections.map(&:vote_count).inject(&:+)
   end
 
-  def poll_data user_participated=false
+  def poll_data(user_participated=true)
     data = {}
     if user_participated
       data[:options] = self.poll_selections.map do |selection|

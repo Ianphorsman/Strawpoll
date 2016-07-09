@@ -7,6 +7,7 @@ class App extends React.Component {
             userParticipated: this.props.userParticipated,
             userHasVoted: this.props.userHasVoted,
             userId: this.props.userId,
+            fullAccessToStream: false,
             pollContext: this.props.pollContext,
             pollId: this.props.pollId,
             pollData: {pollId: 0},
@@ -272,7 +273,7 @@ class App extends React.Component {
             pollId: that.state.pollData.pollId,
             connected: function() {
                 setTimeout(() => this.perform('follow',
-                    { pollData: this.pollData, pollId: this.pollId }), 1000
+                    { pollData: this.pollData, pollId: this.pollId, userId: that.state.userId, getLatest: false }), 1000
                 );
             },
 
@@ -280,16 +281,26 @@ class App extends React.Component {
                 this.perform('unfollow')
             },
             received: function(data) {
-                if (that.state.pollId == data.pollId && that.state.userId == data.userId) {
+                if (that.state.pollId == data.pollId && !('enableAccess' in data)) {
                     that.updatePollData(data.pollData);
-                    that.setState({ voteCount: data.voteCount })
+                    that.setState({voteCount: data.voteCount});
+                } else if (data.enableAccess && !(that.fullAccessToStream)) {
+                    console.log("Enabling Access");
+                    that.setState({ fullAccessToStream: true });
+                    this.updateStream(that);
+                } else {
+                    console.log("Access to full poll data denied.");
+                    that.updatePollData(data.pollData);
+                    that.setState({ voteCount: data.voteCount });
                 }
             },
             updateStream: function(that) {
                 //this.perform('unfollow');
                 setTimeout(() => this.perform('follow', {
                     pollData: that.state.pollData,
-                    pollId: that.state.pollData.pollId
+                    pollId: that.state.pollData.pollId,
+                    userId: that.state.userId,
+                    getLatest: true
                 }), 1000);
             },
         })

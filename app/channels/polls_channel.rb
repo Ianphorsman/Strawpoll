@@ -5,8 +5,24 @@ class PollsChannel < ApplicationCable::Channel
   end
 
   def follow(data) # { pollData => {}, pollId => int }
-    puts data["pollId"]
-    stream_from "polls_#{data["pollId"]}"
+    stop_all_streams
+    user = User.find_by_id(data["userId"])
+    poll = Poll.find_by_id(data["pollId"])
+    user_votes = user.votes.where(poll_id: poll.id).count
+    votes_required = poll.votes_required_per_person
+    if user_votes >= votes_required
+      stream_from "polls_#{poll.id}"
+      if data["getLatest"]
+        puts "Latest"
+        ActionCable.server.broadcast "polls_#{poll.id}",
+                              userId: user.id,
+                              pollId: poll.id,
+                              pollData: poll.poll_data,
+                              voteCount: poll.vote_count
+      end
+    else
+      stream_from "polls_#{poll.id}_user_#{user.id}"
+    end
   end
 
   def unfollow
