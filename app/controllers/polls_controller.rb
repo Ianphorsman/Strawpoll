@@ -114,6 +114,9 @@ class PollsController < ApplicationController
 
   def show_latest
     user = authenticate_or_create_user
+    puts user.hashed_identity
+    puts request.user_agent
+    puts request.remote_ip
     poll = Poll.last
     puts "Latest poll #{poll}"
     if user.nil?
