@@ -3,7 +3,7 @@ class HomeController < ApplicationController
   def index
     @latest = Poll.last.id
     @poll_context = 'newPoll'
-    @poll_id = 0
+    @poll_id = 1
     @full_access_to_stream = false
     @poll_data = { :pollId => 0 }
     @vote_count = 0
@@ -17,7 +17,11 @@ class HomeController < ApplicationController
     else
       @user_votes = user.votes
       @user_id = user.id
-      @user_polls = user.polls.map { |poll| { :id => poll.id, :question => poll.name, :vote_count => poll.vote_count }}.sort_by { |poll| -poll[:vote_count] }.first(10)
+      if user.polls.count > 0
+        @user_polls = user.polls.map { |poll| { :id => poll.id, :question => poll.name, :vote_count => poll.vote_count }}.sort_by { |poll| -poll[:vote_count] }.first(10)
+      else
+        @user_polls = []
+      end
     end
     @popular_polls = Poll.all.sort_by { |poll| poll.vote_count }.last(10).map { |poll| { :id => poll.id, :question => poll.name, :vote_count => poll.vote_count }}
   end
