@@ -44,7 +44,7 @@ class ApplicationController < ActionController::Base
 
     user = User.find_by_hashed_identity(hashed_user)
     if user.nil?
-      User.create({hashed_identity: hashed_user })
+      user = User.create({hashed_identity: hashed_user })
     end
     user
   end
