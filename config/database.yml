@@ -82,5 +82,6 @@ test:
 production:
   <<: *default
   database: Strawpoll_production
-  username: Strawpoll
+  host: 127.0.0.1
+  username: <%= ENV['STRAWPOLL_DATABASE_USERNAME'] %>
   password: <%= ENV['STRAWPOLL_DATABASE_PASSWORD'] %>
