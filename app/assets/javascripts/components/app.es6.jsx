@@ -261,6 +261,7 @@ class App extends React.Component {
                 voteCount={this.state.voteCount}
                 vote={this.vote.bind(this)}
                 userHasVoted={this.state.userHasVoted}
+                link={this.state.shareLink}
                 duplicateVotesAllowed={this.state.pollData.duplicate_votes_allowed}
                 userParticipated={this.state.userParticipated}>
 

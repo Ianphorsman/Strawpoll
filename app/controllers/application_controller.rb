@@ -28,7 +28,8 @@ class ApplicationController < ActionController::Base
   helper_method :user_has_voted?
 
   def share_link poll_id
-    return "/home/show/#{poll_id}"
+    return "159.203.4.89:3000/home/show/#{poll_id}"
+    #return "strawpoll.xyz/home/show/#{poll_id}"
   end
   helper_method :share_link
 

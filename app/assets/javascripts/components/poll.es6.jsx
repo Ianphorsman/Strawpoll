@@ -22,6 +22,7 @@ class Poll extends React.Component {
                 vote={this.props.vote.bind(this)}>
 
             </Progress>
+            <p className="well">{this.props.link}</p>
             
         </section>
     );
