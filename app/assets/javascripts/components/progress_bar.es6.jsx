@@ -5,7 +5,11 @@ class ProgressBar extends React.Component {
     }
 
     barWidthAmount () {
-        return "" + Math.round(this.props.pollSelectionYValue / (this.props.pollVoteCount + 0.01) * 100) + "%";
+        let percent = Math.round(this.props.pollSelectionYValue / (this.props.pollVoteCount + 0.01) * 100);
+        if (percent == 99) {
+            percent = 100;
+        }
+        return "" + percent + "%";
     }
 
     getStyle () {
