@@ -7,7 +7,7 @@ class HomeController < ApplicationController
     @full_access_to_stream = false
     @poll_data = { :pollId => 0 }
     @vote_count = 0
-    @share_link = '/home/show/0'
+    @share_link ='/home/show/0'
     @user_poll_votes = {}
     user = authenticate_or_create_user
     if user.nil?
